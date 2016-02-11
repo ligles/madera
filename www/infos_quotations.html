@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <title>MADERA - DEVIS</title>
+
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+
+    <style>
+        .percent {
+            width: 55px;
+        }
+        .amount {
+            width: 120px;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div id="topMenu">
+        <img id="return" src="assets/img/return.png">
+        <h1>DEVIS</h1>
+        <img id="menu" src="assets/img/menu.png">
+    </div>
+    <div id="content">
+        <br>
+        <br>
+        <div class="subtitle">DEVIS</div>
+        <div class="subtitle" id="infos_id"></div>
+
+        <div class="separationLine"> </div>
+
+        <div class="description">DATE</div>
+        <input id="infos_date" placeholder="Date" maxlength="10" readonly>
+        <br><br>
+        <div class="description">STATUT</div>
+        <input id="infos_status" type="text" readonly>
+            <!--<option value="EN COURS">EN COURS</option>-->
+            <!--<option value="TERMINÉ">TERMINÉ</option>-->
+            <!--<option value="ANNULÉ">ANNULÉ</option>-->
+        <br><br>
+        <div class="description">MONTANT</div>
+        <input id="infos_amount" placeholder="Montant" type="number">
+
+        <div class="separationLine"> </div>
+
+        <div class="description">ECHELONNEMENT DE PAIEMENT</div><br>
+        <div id="amounts" style="margin-left: 20px;">
+            <div class="description">SIGNATURE</div>
+                <input id="infos_amount_percent_01" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_01" type="number" class="amount" placeholder="Montant">
+            <div class="description">PERMIS</div>
+                <input id="infos_amount_percent_02" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_02" type="number" class="amount" placeholder="Montant">
+            <div class="description">CHANTIER</div>
+                <input id="infos_amount_percent_03" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_03" type="number" class="amount" placeholder="Montant">
+            <div class="description">CLÉS</div>
+                <input id="infos_amount_percent_04" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_04" type="number" class="amount" placeholder="Montant">
+        </div>
+
+        <div id="modify" class="button"></div>
+    </div>
+</div>
+
+<!--SCRIPTS-->
+<script type="text/javascript" src="js/infos_quotations.js"></script>
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+</body>
+</html>

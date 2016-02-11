@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <title>MADERA - PROJETS</title>
+
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+</head>
+<body>
+<div class="app">
+    <div id="topMenu">
+        <img id="return" src="assets/img/return.png">
+        <h1>PROJETS</h1>
+        <img id="menu" src="assets/img/menu.png">
+    </div>
+    <div id="content">
+        <br>
+        <br>
+        <div class="subtitle">PROJET</div>
+        <div class="subtitle" id="infos_id"></div>
+
+        <div class="separationLine"> </div>
+
+        <div class="description">NOM</div>
+        <input id="infos_name" placeholder="Nom" maxlength="16">
+        <br><br>
+        <div class="description">DATE DE CRÉATION</div>
+        <input id="infos_date" placeholder="Date de création" readonly>
+        <br><br>
+        <div class="description">CLIENT</div>
+        <input id="infos_client" placeholder="Numéro client" maxlength="16">
+        <br><br>
+        <div class="description">STATUT</div>
+        <input id="infos_status" type="text" readonly>
+            <!--<option value="ATTENTE">ATTENTE</option>-->
+            <!--<option value="VALIDATION">VALIDATION</option>-->
+            <!--<option value="EN COURS">EN COURS</option>-->
+            <!--<option value="TERMINÉ">TERMINÉ</option>-->
+            <!--<option value="ANNULÉ">ANNULÉ</option>-->
+        <br><br>
+        <div id="modify" class="button"></div>
+
+        <div class="separationLine" style="display: none"> </div>
+
+        <div id="quotations_part" style="display: none">
+            <div class="description">DEVIS</div>
+            <div id="quotations_list"></div>
+            <br><br>
+            <div id="add_new_quotation" class="button">NOUVEAU DEVIS</div>
+        </div>
+    </div>
+</div>
+
+<!--SCRIPTS-->
+<script type="text/javascript" src="js/infos_projects.js"></script>
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+</body>
+</html>

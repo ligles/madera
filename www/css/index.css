@@ -1,0 +1,13 @@
+#content {
+    padding-top: 20px;
+    margin-top: 16%;
+    height: 92%;
+    width: 100%;
+    overflow-y: auto;
+
+    text-align: center;
+}
+
+#content a {
+    text-decoration: none;
+}
