@@ -23,4 +23,12 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+
+	
+	<!-- ICONS -->
+	
+	<platform name="wp8">
+		<icon src="www/assets/icons/icon.png" width="512" height="512" />
+		<splash src="www/assets/icons/splash.png" width="768" height="1280" />
+     </platform>
 </widget>
