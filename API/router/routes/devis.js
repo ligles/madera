@@ -12,7 +12,7 @@ var express = require('express'),
 // Default route. Return nothing
 router.get('/', function(req, res) {
     res.type('text/plain');     // Set content-type
-    res.send('Hello world from clients/ !');  // Send text response
+    res.send('Hello world from devis/ !');  // Send text response
 });
 
 // Get by ID
@@ -29,12 +29,12 @@ router.get('/:id', function(req, res) {
     }
 });
 
-// Add client
+// Add devis
 router.post('/', function(req, res) {
 
 });
 
-// Update client
+// Update devis
 //PUT Method for update entire class data else PATCH command
 router.put('/:id', function(req, res) {
 

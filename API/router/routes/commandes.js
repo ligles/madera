@@ -12,7 +12,7 @@ var express = require('express'),
 // Default route. Return nothing
 router.get('/', function(req, res) {
     res.type('text/plain');     // Set content-type
-    res.send('Hello world from clients/ !');  // Send text response
+    res.send('Hello world from commandes/ !');  // Send text response
 });
 
 // Get by ID
@@ -24,18 +24,17 @@ router.get('/:id', function(req, res) {
     }
     else{
 
-        //Tester si l'id est déjà enregistré en base
-        //retourné page 404 si non trouvé
     }
 });
 
-// Add client
+// Add commande
 router.post('/', function(req, res) {
 
 });
 
-// Update client
+// Update commande
 //PUT Method for update entire class data else PATCH command
+//200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid.
 router.put('/:id', function(req, res) {
 
     if(req.params.id == null)
@@ -44,8 +43,6 @@ router.put('/:id', function(req, res) {
         res.render('public/404.html');
     }
     else{
-        //Tester si l'id est déjà enregistré en base
-        //retourné page 404 si non trouvé
 
     }
 });

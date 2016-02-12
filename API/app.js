@@ -11,6 +11,9 @@ app.get('/', function(req, res) {
 });
 
 app.use('/clients', require('./router/routes/clients'));
+app.use('/commandes', require('./router/routes/commandes'));
+app.use('/devis', require('./router/routes/devis'));
+app.use('/projets', require('./router/routes/projets'));
 
 // ERRORS
 
