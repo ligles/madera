@@ -1,0 +1,20 @@
+{
+  "name": "MaderaAPI",
+  "version": "0.1.0",
+  "description": "API for the Madera project.",
+  "dependencies": {
+    "express": "latest",
+    "body-parser": "latest"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ligles/madera"
+  },
+  "bugs": {
+    "url": "https://github.com/ligles/madera/issues"
+  },
+  "homepage": "https://github.com/ligles/madera",
+  "main": "app.js",
+  "author": "Anthony Gee, Anais Verdier, Gilles Vandecandelaere"
+}

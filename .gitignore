@@ -1,3 +1,5 @@
 platforms/
 www/.idea/
 hooks/
+API/.idea/
+API/node_modules/
