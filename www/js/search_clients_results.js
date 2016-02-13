@@ -6,8 +6,9 @@ var initPage = function() {
         document.getElementById("search_text").innerText = "\"" + search_client + "\"";
 
         ajax(
-            "GET/ALL",
-            null,
+            "GET/SEARCH",
+            "clients",
+            search_client,
             function(data) {
                 data.forEach(function(customer) {
                     var div = document.createElement('div');
@@ -45,40 +46,3 @@ var initPage = function() {
         window.location.href = "search_clients.html";
     }
 };
-
-function ajax(query, params, onSuccess, onError) {
-    onError = onError || function(status, text) { alert('Erreur ajax (' + status + ') : ' + text); };
-
-    var xhttp;
-
-    if (window.XMLHttpRequest) {
-        xhttp = new XMLHttpRequest();
-    } else {
-        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == XMLHttpRequest.DONE) {
-            if (xhttp.status == 200) {
-                onSuccess(JSON.parse(xhttp.response));
-            }
-            else {
-                onError(xhttp.status, xhttp.response.text);
-            }
-        }
-    };
-
-    switch(query) {
-        case "GET/ALL" :
-            xhttp.open("GET", "http://" + AJAX_IP + "/clients", true);
-            xhttp.send();
-            break;
-        case "GET/ID":
-            xhttp.open("GET", "http://" + AJAX_IP + "/clients/" + params['id'], true);
-            xhttp.send();
-            break;
-        default :
-            onError('000', 'Mauvaise requête.');
-            break;
-    }
-}

@@ -5,94 +5,189 @@
 var express = require('express'),
     router = express.Router();
 
+// TODO : Remplacer par les requÃªtes en base de donnÃ©es
+var clients = [
+    {
+        id:"000001",
+        first_name:"Anthony",
+        last_name:"GÃ©e",
+        address_1:"65 rue MarÃ©chal de Lattre de Tassigny",
+        address_2:"V-10",
+        city:"Mont-Saint-Aignan",
+        zip_code:"76130",
+        country:"France",
+        phone:"0609040820",
+        mail:"anthony.gee@viacesi.fr",
+        birth_date:"06/02/1994"
+    },
+    {
+        id:"000002",
+        first_name:"AnaÃ¯s",
+        last_name:"Verdier",
+        address_1:"4 rue Parmentier",
+        address_2:"",
+        city:"Le Havre",
+        zip_code:"76600",
+        country:"France",
+        phone:"0607080910",
+        mail:"anais.verdier@viacesi.fr",
+        birth_date:"07/06/1990"
+    },
+    {
+        id:"000003",
+        first_name:"Gilles",
+        last_name:"Vandecandelaere",
+        address_1:"8 impasse de l'Ã©cureuil",
+        address_2:"EntrÃ©e nÂ°2",
+        city:"Rouen",
+        zip_code:"76000",
+        country:"France",
+        phone:"06099889988",
+        mail:"gilles.vandecandelaere@viacesi.fr",
+        birth_date:"01/01/1970"
+    }
+];
+
+
 /************************************************************************
  *                                ROUTES                                *
  ************************************************************************/
 
-// Default route. Return nothing
+// Default route. Return all the clients
 router.get('/', function(req, res) {
-
-    var clients = [
-        {
-            id:"000001",
-            first_name:"Anthony",
-            last_name:"GÃ©e",
-            address_1:"65 rue MarÃ©chal de Lattre de Tassigny",
-            address_2:"V-10",
-            city:"Mont-Saint-Aignan",
-            zip_code:"76130",
-            country:"France",
-            phone:"0609040820",
-            mail:"anthony.gee@viacesi.fr",
-            birth_date:"06/02/1994"
-        },
-        {
-            id:"000002",
-            first_name:"AnaÃ¯s",
-            last_name:"Verdier",
-            address_1:"4 rue Parmentier",
-            address_2:"",
-            city:"Le Havre",
-            zip_code:"76600",
-            country:"France",
-            phone:"0607080910",
-            mail:"anais.verdier@viacesi.fr",
-            birth_date:"07/06/1990"
-        },
-        {
-            id:"000003",
-            first_name:"Gilles",
-            last_name:"Vandecandelaere",
-            address_1:"8 impasse de l'Ã©cureuil",
-            address_2:"EntrÃ©e nÂ°2",
-            city:"Rouen",
-            zip_code:"76000",
-            country:"France",
-            phone:"06099889988",
-            mail:"gilles.vandecandelaere@viacesi.fr",
-            birth_date:"01/01/1970"
-        }
-    ];
-
-    res.statusCode = 200;
+    res.status(200);
     res.header("Access-Control-Allow-Origin", "*");
     res.send(clients);
 });
 
 // Get by ID
 router.get('/:id', function(req, res) {
+
     if(req.params.id == null)
     {
-        res.status(404);
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
         res.render('public/404.html');
     }
-    else{
+    else
+    {
+        var result = clients.filter(function(item) {
+            return item.id == req.params.id
+        })[0];
 
-        //Tester si l'id est déjà enregistré en base
-        //retourné page 404 si non trouvé
+        if(result == 0) {
+            res.status(204);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send();
+        }
+        else {
+            res.status(200);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send(result);
+        }
+    }
+});
+
+// Search client by text / ref
+router.get('/search/:text', function(req, res) {
+    if(req.params.text == null)
+    {
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.render('public/404.html');
+    }
+    else
+    {
+        var text = req.params.text.toUpperCase();
+
+        var result = clients.filter(function(item) {
+            if (item.id.toUpperCase().search(text) != -1) return true;
+            if (item.first_name.toUpperCase().search(text) != -1) return true;
+            if (item.last_name.toUpperCase().search(text) != -1) return true;
+            return false;
+        });
+
+        if(result == 0) {
+            res.status(204);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send();
+        }
+        else {
+            res.status(200);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send(result);
+        }
     }
 });
 
 // Add client
 router.post('/', function(req, res) {
 
+    if(req.body.first_name == null
+        || req.body.last_name == null
+        || req.body.birth_date == null)
+    {
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.render('public/404.html');
+    }
+    else
+    {
+        clients.push({
+            id: "00000" + (clients.length + 1),
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            address_1: "",
+            address_2: "",
+            city: "",
+            zip_code: "",
+            country:"France",
+            phone: "",
+            mail: "",
+            birth_date: req.body.birth_date
+        });
+
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.send(JSON.stringify("OK"));
+    }
 });
 
 // Update client
-//PUT Method for update entire class data else PATCH command
-router.put('/:id', function(req, res) {
+router.post('/update/', function(req, res) {
 
-    if(req.params.id == null)
+    if(req.body.id == null
+        || req.body.first_name == null
+        || req.body.last_name == null
+        || req.body.birth_date == null)
     {
-        res.status(404);
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
         res.render('public/404.html');
     }
-    else{
-        //Tester si l'id est déjà enregistré en base
-        //retourné page 404 si non trouvé
+    else
+    {
+        for(var count = 0; count < clients.length; count++) {
+            if(clients[count].id == req.body.id) {
 
+                clients[count].first_name = req.body.first_name;
+                clients[count].last_name = req.body.last_name;
+                clients[count].birth_date = req.body.birth_date;
+
+                res.status(200);
+                res.header("Access-Control-Allow-Origin", "*");
+                res.send(JSON.stringify("OK"));
+
+                return;
+            }
+        }
+
+        res.status(204);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.send(JSON.stringify("Non"));
     }
 });
+
 
 module.exports = router;
 
