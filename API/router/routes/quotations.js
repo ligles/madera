@@ -35,48 +35,161 @@ var devis = [
     }
 ];
 
+var msg200 = JSON.stringify("Query done."),
+    msg204 = JSON.stringify("No results."),
+    msg400 = JSON.stringify("Missing parameters.");
+
 /************************************************************************
  *                                ROUTES                                *
  ************************************************************************/
 
-// Default route. Return nothing
+// Default route. Return all the quotations
 router.get('/', function(req, res) {
-    res.type('text/plain');     // Set content-type
-    res.send('Hello world from devis/ !');  // Send text response
+    res.status(200);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.send(devis);
 });
 
 // Get by ID
 router.get('/:id', function(req, res) {
+
     if(req.params.id == null)
     {
-        res.status(404);
-        res.render('public/404.html');
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.search(msg400);
     }
-    else{
+    else
+    {
+        var result = devis.filter(function(item) {
+            return item.id == req.params.id
+        })[0];
 
-        //Tester si l'id est déjà enregistré en base
-        //retourné page 404 si non trouvé
+        if(result == 0) {
+            res.status(204);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send(msg204);
+        }
+        else {
+            res.status(200);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send(result);
+        }
     }
 });
 
-// Add devis
+// Search quotation by text / ref
+router.get('/search/:text', function(req, res) {
+    if(req.params.text == null)
+    {
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.search(msg400);
+    }
+    else
+    {
+        var text = req.params.text.toUpperCase();
+
+        var result = devis.filter(function(item) {
+            if (item.id.toUpperCase().search(text) != -1) return true;
+            if (item.project_name.toUpperCase().search(text) != -1) return true;
+            return false;
+        });
+
+        if(result == 0) {
+            res.status(204);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send(msg204);
+        }
+        else {
+            res.status(200);
+            res.header("Access-Control-Allow-Origin", "*");
+            res.send(result);
+        }
+    }
+});
+
+// Add quotation
 router.post('/', function(req, res) {
 
+    if(req.body.project_id == null
+        || req.body.date == null
+        || req.body.project_name == null
+        || req.body.client == null
+        || req.body.status == null
+        || req.body.amount_1 == null
+        || req.body.amount_2 == null
+        || req.body.amount_3 == null
+        || req.body.amount_4 == null)
+    {
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.search(msg400);
+    }
+    else
+    {
+        var numberOfQuotationsForClient = 1;
+
+        for(var count = 0; count < devis.length; count++) {
+            if(devis[count].client == req.body.client) numberOfQuotationsForClient++;
+        }
+
+        devis.push({
+            "id": req.body.project_id + numberOfQuotationsForClient,
+            "date": req.body.date,
+            "project_name": req.body.project_name,
+            "client": req.body.client,
+            "status": req.body.status,
+            "amounts":[
+                req.body.amount_1,
+                req.body.amount_2,
+                req.body.amount_3,
+                req.body.amount_4
+            ]
+        });
+
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.send(msg200);
+    }
 });
 
-// Update devis
-//PUT Method for update entire class data else PATCH command
-router.put('/:id', function(req, res) {
+// Update quotation
+router.post('/update/', function(req, res) {
 
-    if(req.params.id == null)
+    if(req.body.id == null
+        || req.body.status == null
+        || req.body.amount_1 == null
+        || req.body.amount_2 == null
+        || req.body.amount_3 == null
+        || req.body.amount_4 == null)
     {
-        res.status(404);
-        res.render('public/404.html');
+        res.status(400);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.search(msg400);
     }
-    else{
-        //Tester si l'id est déjà enregistré en base
-        //retourné page 404 si non trouvé
+    else
+    {
+        for(var count = 0; count < devis.length; count++) {
+            if(devis[count].id == req.body.id) {
 
+                devis[count].status = req.body.status;
+                devis[count].amount_1 = req.body.amount_1;
+                devis[count].amount_2 = req.body.amount_2;
+                devis[count].amount_3 = req.body.amount_3;
+                devis[count].amount_4 = req.body.amount_4;
+
+                res.status(200);
+                res.header("Access-Control-Allow-Origin", "*");
+                res.send(msg200);
+
+                return;
+            }
+        }
+
+        res.status(204);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.send(msg204);
     }
 });
 
