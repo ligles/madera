@@ -39,10 +39,11 @@
         <input id="infos_date" placeholder="Date" maxlength="10" readonly>
         <br><br>
         <div class="description">STATUT</div>
-        <input id="infos_status" type="text" readonly>
-            <!--<option value="EN COURS">EN COURS</option>-->
-            <!--<option value="TERMINÉ">TERMINÉ</option>-->
-            <!--<option value="ANNULÉ">ANNULÉ</option>-->
+        <select id="infos_status" type="text">
+            <option value="EN COURS">EN COURS</option>
+            <option value="TERMINÉ">TERMINÉ</option>
+            <option value="ANNULÉ">ANNULÉ</option>
+        </select>
         <br><br>
         <div class="description">MONTANT</div>
         <input id="infos_amount" placeholder="Montant" type="number">
@@ -52,16 +53,16 @@
         <div class="description">ECHELONNEMENT DE PAIEMENT</div><br>
         <div id="amounts" style="margin-left: 20px;">
             <div class="description">SIGNATURE</div>
-                <input id="infos_amount_percent_01" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_percent_01" type="number" class="percent" placeholder="%" readonly="true">
                 <input id="infos_amount_01" type="number" class="amount" placeholder="Montant">
             <div class="description">PERMIS</div>
-                <input id="infos_amount_percent_02" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_percent_02" type="number" class="percent" placeholder="%" readonly="true">
                 <input id="infos_amount_02" type="number" class="amount" placeholder="Montant">
             <div class="description">CHANTIER</div>
-                <input id="infos_amount_percent_03" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_percent_03" type="number" class="percent" placeholder="%" readonly="true">
                 <input id="infos_amount_03" type="number" class="amount" placeholder="Montant">
             <div class="description">CLÉS</div>
-                <input id="infos_amount_percent_04" type="number" class="percent" placeholder="%">
+                <input id="infos_amount_percent_04" type="number" class="percent" placeholder="%" readonly="true">
                 <input id="infos_amount_04" type="number" class="amount" placeholder="Montant">
         </div>
 
@@ -74,5 +75,6 @@
 
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
 </body>
 </html>

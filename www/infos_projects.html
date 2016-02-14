@@ -27,21 +27,22 @@
         <div class="separationLine"> </div>
 
         <div class="description">NOM</div>
-        <input id="infos_name" placeholder="Nom" maxlength="16">
+        <input id="infos_name" placeholder="Nom" maxlength="31">
         <br><br>
         <div class="description">DATE DE CRÉATION</div>
-        <input id="infos_date" placeholder="Date de création" readonly>
+        <input id="infos_date" placeholder="Date de création" readonly="true">
         <br><br>
         <div class="description">CLIENT</div>
-        <input id="infos_client" placeholder="Numéro client" maxlength="16">
+        <input id="infos_client" placeholder="Numéro client" maxlength="16" readonly="true">
         <br><br>
         <div class="description">STATUT</div>
-        <input id="infos_status" type="text" readonly>
-            <!--<option value="ATTENTE">ATTENTE</option>-->
-            <!--<option value="VALIDATION">VALIDATION</option>-->
-            <!--<option value="EN COURS">EN COURS</option>-->
-            <!--<option value="TERMINÉ">TERMINÉ</option>-->
-            <!--<option value="ANNULÉ">ANNULÉ</option>-->
+        <select id="infos_status" type="text">
+            <option value="ATTENTE">ATTENTE</option>
+            <option value="VALIDATION">VALIDATION</option>
+            <option value="EN COURS">EN COURS</option>
+            <option value="TERMINÉ">TERMINÉ</option>
+            <option value="ANNULÉ">ANNULÉ</option>
+        </select>
         <br><br>
         <div id="modify" class="button"></div>
 
@@ -49,6 +50,7 @@
 
         <div id="quotations_part" style="display: none">
             <div class="description">DEVIS</div>
+            <br>
             <div id="quotations_list"></div>
             <br><br>
             <div id="add_new_quotation" class="button">NOUVEAU DEVIS</div>
@@ -61,5 +63,6 @@
 
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
 </body>
 </html>

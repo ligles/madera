@@ -29,26 +29,26 @@ function ajax(query, category, param, onSuccess, onError) {
     };
 
     switch(query) {
-        case "GET/ALL" :
+        case "GET/ALL" : // Get all the things from a category
             xhttp.open("GET", "http://" + AJAX_IP + "/" + category, true);
             xhttp.send();
             break;
-        case "GET/ID":
+        case "GET/ID": // Get an item in a category by its ID
             xhttp.open("GET", "http://" + AJAX_IP + "/" + category + "/" + param, true);
             xhttp.send();
             break;
-        case "GET/SEARCH":
+        case "GET/SEARCH": // Get all items with searched text in it
             xhttp.open("GET", "http://" + AJAX_IP + "/" + category + "/search/" + param, true);
             xhttp.send();
             break;
 
-        case "POST":
+        case "POST": // Add an item
             xhttp.open("POST", "http://" + AJAX_IP + "/" + category + "/", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(param);
             break;
 
-        case "UPDATE":
+        case "UPDATE": // Update an item
             xhttp.open("POST", "http://" + AJAX_IP + "/" + category + "/update/", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(param);

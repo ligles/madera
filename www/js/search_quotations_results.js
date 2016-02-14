@@ -5,43 +5,52 @@ var initPage = function() {
     if(search_quotation != null && search_quotation != "") {
         document.getElementById("search_text").innerText = "\"" + search_quotation + "\"";
 
-        data['quotations'].forEach(function(quotation) {
+        ajax(
+            "GET/SEARCH",
+            "quotations",
+            search_quotation,
+            function(data) {
+                console.log(data);
 
-            // Don't display if canceled or finished
-            if(quotation.status == "ANNULÉ" || quotation.status == "TERMINÉ") return;
+                data.forEach(function(quotation) {
 
-            var div = document.createElement('div');
-            div.setAttribute('class', 'one_search_result');
-            div.setAttribute('id', quotation.id);
+                    ////Don't display if canceled or finished
+                    //if(quotation.status == "ANNULÉ" || quotation.status == "TERMINÉ") return;
 
-            var span_name = document.createElement('span');
-            span_name.innerText = "-> " + quotation.project_name;
+                    var div = document.createElement('div');
+                    div.setAttribute('class', 'one_search_result');
+                    div.setAttribute('id', quotation.id);
 
-            var span_id = document.createElement('span');
-            span_id.innerText = "N°" + quotation.id;
+                     var span_name = document.createElement('span');
+                    span_name.innerText = "-> " + quotation.project_name;
 
-            var span_client_name = document.createElement('span');
-            span_client_name.innerText = quotation.client;
+                    var span_id = document.createElement('span');
+                    span_id.innerText = "N°" + quotation.id;
 
-            var span_statut = document.createElement('span');
-            span_statut.innerText = quotation.status;
+                    var span_client_name = document.createElement('span');
+                    span_client_name.innerText = quotation.client;
 
-            div.appendChild(span_name);
-            div.appendChild(span_id);
-            div.appendChild(span_client_name);
-            div.appendChild(span_statut);
+                    var span_statut = document.createElement('span');
+                    span_statut.innerText = quotation.status;
 
-            document.getElementById("results_list").appendChild(div);
-        });
+                    div.appendChild(span_name);
+                    div.appendChild(span_id);
+                    div.appendChild(span_client_name);
+                    div.appendChild(span_statut);
 
-        Array.prototype.forEach.call(document.getElementsByClassName("one_search_result"), function(elem) {
-            elem.onclick = function() {
-                window.localStorage.setItem("quotation_id", elem.id);
-                window.localStorage.setItem("add_quotation", null);
+                    document.getElementById("results_list").appendChild(div);
+                });
 
-                window.location.href = "infos_quotations.html"
+                Array.prototype.forEach.call(document.getElementsByClassName("one_search_result"), function(elem) {
+                    elem.onclick = function() {
+                        window.localStorage.setItem("quotation_id", elem.id);
+                        window.localStorage.setItem("add_quotation", null);
+
+                        window.location.href = "infos_quotations.html"
+                    }
+                });
             }
-        });
+        );
     }
     else {
         window.location.href = "search_quotations.html";

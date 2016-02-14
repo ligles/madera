@@ -37,7 +37,6 @@ var initPage = function() {
                 "clients",
                 params,
                 function(result) {
-                    console.log(result);
                     alert("Ajout OK! " + result);
                 },
                 function(status, text) {
@@ -62,6 +61,30 @@ var initPage = function() {
                 document.getElementById("infos_last_name").value = data.last_name;
                 document.getElementById("infos_first_name").value = data.first_name;
                 document.getElementById("infos_birth_date").value = data.birth_date;
+
+                console.log(data.projects_list);
+
+                data.projects_list.forEach(function(project) {
+
+                    var div = document.createElement('div');
+                    div.setAttribute('class', 'one_search_result');
+                    div.setAttribute('id', project.id);
+
+                    var span_name = document.createElement('span');
+                    span_name.innerText = "-> " + project.project_name;
+
+                    var span_id = document.createElement('span');
+                    span_id.innerText = "N°" + project.id;
+
+                    var span_date = document.createElement('span');
+                    span_date.innerText = project.date;
+
+                    div.appendChild(span_name);
+                    div.appendChild(span_id);
+                    div.appendChild(span_date);
+
+                    document.getElementById("projects_list").appendChild(div);
+                });
 
                 document.getElementById("add_new_project").onclick = function() {
                     window.localStorage.setItem("add_project", "true");

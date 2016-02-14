@@ -47,6 +47,22 @@ var clients = [
         birth_date:"01/01/1970"
     }
 ];
+var projects = [
+    {
+        "id":"000003001",
+        "project_name":"Abris de jardin",
+        "date":"14/09/2015",
+        "client":"000003",
+        "status":"EN COURS"
+    },
+    {
+        "id":"000003002",
+        "project_name":"Chalet en Suisse",
+        "date":"17/12/2015",
+        "client":"000003",
+        "status":"VALIDATION"
+    }
+];
 
 var msg200 = JSON.stringify("Query done."),
     msg204 = JSON.stringify("No results."),
@@ -77,6 +93,10 @@ router.get('/:id', function(req, res) {
         var result = clients.filter(function(item) {
             return item.id == req.params.id
         })[0];
+        result.projects_list = projects.filter(function(item) {
+            if(item.client == result.id) return true;
+            return false;
+        });
 
         if(result == 0) {
             res.status(204);

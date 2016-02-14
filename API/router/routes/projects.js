@@ -5,7 +5,7 @@
 var express = require('express'),
     router = express.Router();
 
-// TODO : Remplacer par les requêtes en base de données
+// TODO : Remplacer par les requÃªtes en base de donnÃ©es
 var projects = [
     {
         "id":"000003001",
@@ -20,6 +20,34 @@ var projects = [
         "date":"17/12/2015",
         "client":"000003",
         "status":"VALIDATION"
+    }
+];
+var devis = [
+    {
+        "id":"00000300101",
+        "date":"17/12/2015",
+        "project_name":"Abris de jardin",
+        "client":"G. Vandecandelaere",
+        "status":"ANNULÃ‰",
+        "amounts":[
+            "30000",
+            "30000",
+            "39500",
+            "100500"
+        ]
+    },
+    {
+        "id":"00000300102",
+        "date":"18/12/2015",
+        "project_name":"Abris de jardin",
+        "client":"G. Vandecandelaere",
+        "status":"EN COURS",
+        "amounts":[
+            "20000",
+            "20000",
+            "10000",
+            "150000"
+        ]
     }
 ];
 
@@ -52,6 +80,10 @@ router.get('/:id', function(req, res) {
         var result = projects.filter(function(item) {
             return item.id == req.params.id
         })[0];
+        result.quotations_list = devis.filter(function(item) {
+            if(item.project_name == result.project_name) return true;
+            return false;
+        });
 
         if(result == 0) {
             res.status(204);
@@ -102,7 +134,8 @@ router.post('/', function(req, res) {
 
     if(req.body.project_name == null
         || req.body.date == null
-        || req.body.client == null)
+        || req.body.client == null
+        || req.body.status == null)
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
@@ -121,7 +154,7 @@ router.post('/', function(req, res) {
             project_name: req.body.project_name,
             date: req.body.date,
             client: req.body.client,
-            status: "EN ATTENTE"
+            status: req.body.status
         });
 
         res.status(200);
@@ -134,8 +167,8 @@ router.post('/', function(req, res) {
 router.post('/update/', function(req, res) {
 
     if(req.body.id == null
-        || req.body.project_name == null
-        || req.body.status)
+        || req.body.name == null
+        || req.body.status == null)
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
@@ -146,7 +179,7 @@ router.post('/update/', function(req, res) {
         for(var count = 0; count < projects.length; count++) {
             if(projects[count].id == req.body.id) {
 
-                projects[count].project_name = req.body.project_name;
+                projects[count].project_name = req.body.name;
                 projects[count].status = req.body.status;
 
                 res.status(200);

@@ -5,14 +5,14 @@
 var express = require('express'),
     router = express.Router();
 
-// TODO : Remplacer par les requ�tes en base de donn�es
+// TODO : Remplacer par les requêtes en base de données
 var devis = [
     {
         "id":"00000300101",
         "date":"17/12/2015",
         "project_name":"Abris de jardin",
         "client":"G. Vandecandelaere",
-        "status":"ANNUL�",
+        "status":"ANNULÉ",
         "amounts":[
             "30000",
             "30000",
@@ -114,8 +114,6 @@ router.post('/', function(req, res) {
 
     if(req.body.project_id == null
         || req.body.date == null
-        || req.body.project_name == null
-        || req.body.client == null
         || req.body.status == null
         || req.body.amount_1 == null
         || req.body.amount_2 == null
@@ -124,7 +122,7 @@ router.post('/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.search(msg400);
+        res.send(msg400);
     }
     else
     {
@@ -135,10 +133,10 @@ router.post('/', function(req, res) {
         }
 
         devis.push({
-            "id": req.body.project_id + numberOfQuotationsForClient,
+            "id": req.body.project_id + "" + numberOfQuotationsForClient,
             "date": req.body.date,
-            "project_name": req.body.project_name,
-            "client": req.body.client,
+            "project_name": "A récupérer en DB",
+            "client": "A récupérer en DB",
             "status": req.body.status,
             "amounts":[
                 req.body.amount_1,
@@ -174,10 +172,12 @@ router.post('/update/', function(req, res) {
             if(devis[count].id == req.body.id) {
 
                 devis[count].status = req.body.status;
-                devis[count].amount_1 = req.body.amount_1;
-                devis[count].amount_2 = req.body.amount_2;
-                devis[count].amount_3 = req.body.amount_3;
-                devis[count].amount_4 = req.body.amount_4;
+                devis[count].amounts = [
+                    req.body.amount_1.toString(),
+                    req.body.amount_2.toString(),
+                    req.body.amount_3.toString(),
+                    req.body.amount_4.toString()
+                ];
 
                 res.status(200);
                 res.header("Access-Control-Allow-Origin", "*");
