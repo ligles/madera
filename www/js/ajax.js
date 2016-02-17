@@ -1,6 +1,10 @@
-// AJAX
+//-----------------------------------------------------------------------
+//                   PARAMETERS
+
 var AJAX_IP = "localhost:3000";
-var AJAX_TOKEN = "";
+var AJAX_TOKEN = "MADERA";
+
+//-----------------------------------------------------------------------
 
 function ajax(query, category, param, onSuccess, onError) {
     onError = onError || function(status, text) { alert('Erreur ' + category + ' (' + status + ') : ' + text); };
@@ -9,7 +13,8 @@ function ajax(query, category, param, onSuccess, onError) {
 
     if (window.XMLHttpRequest) {
         xhttp = new XMLHttpRequest();
-    } else {
+    }
+    else {
         xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
@@ -30,26 +35,34 @@ function ajax(query, category, param, onSuccess, onError) {
     switch(query) {
         case "GET/ALL" : // Get all the things from a category
             xhttp.open("GET", "http://" + AJAX_IP + "/" + category, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("token", AJAX_TOKEN);
             xhttp.send();
             break;
         case "GET/ID": // Get an item in a category by its ID
             xhttp.open("GET", "http://" + AJAX_IP + "/" + category + "/" + param, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("token", AJAX_TOKEN);
             xhttp.send();
             break;
         case "GET/SEARCH": // Get all items with searched text in it
             xhttp.open("GET", "http://" + AJAX_IP + "/" + category + "/search/" + param, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("token", AJAX_TOKEN);
             xhttp.send();
             break;
 
         case "POST": // Add an item
             xhttp.open("POST", "http://" + AJAX_IP + "/" + category + "/", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("token", AJAX_TOKEN);
             xhttp.send(param);
             break;
 
         case "UPDATE": // Update an item
             xhttp.open("POST", "http://" + AJAX_IP + "/" + category + "/update/", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("token", AJAX_TOKEN);
             xhttp.send(param);
             break;
 
