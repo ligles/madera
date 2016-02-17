@@ -1,6 +1,5 @@
 // AJAX
-//var AJAX_IP = "10.176.131.236:3000";
-var AJAX_IP = "192.168.1.72:3000";
+var AJAX_IP = "localhost:3000";
 var AJAX_TOKEN = "";
 
 function ajax(query, category, param, onSuccess, onError) {
