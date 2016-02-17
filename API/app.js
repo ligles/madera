@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
     res.status(400);
     res.header("Access-Control-Allow-Origin", "*");
-    res.render('public/404.html');
+    res.sendFile(__dirname + '/public/404.html');
 });
 
 // Other routes
@@ -28,13 +28,13 @@ app.use('/projects', require('./router/routes/projects'));
 // Handle 404
 app.use(function (error, req) {
     req.status(404);
-    req.render('public/404.html');
+    req.sendFile(__dirname + '/public/404.html');
 });
 
 // Handle 500
 app.use(function (error, req, res, next) {
     res.status(500);
-    res.render('public/500.html');
+    res.sendFile(__dirname + '/public/500.html');
 });
 
 
