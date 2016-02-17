@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
     res.status(400);
     res.header("Access-Control-Allow-Origin", "*");
-    res.sendFile(__dirname + '/public/404.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 // Other routes
