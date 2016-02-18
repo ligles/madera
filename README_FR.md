@@ -8,7 +8,7 @@ Ce projet est mené sur 2 ans, en groupe de 3~4 personnes, et est déterminant pou
 ###Team
 
 * [Anthony G. aka Jaskar](https://github.com/Jaskar)
-* [A.V. aka](https://github.com/anais49)
+* [A.V. aka anais49](https://github.com/anais49)
 * [G.V. aka ligles](https://github.com/ligles)
 
 
@@ -19,7 +19,7 @@ Ce projet comprend trois parties :
 * API : NodeJS
 * Base de données : Cassandra
 
-	
+
 ###Comment l'installer ?
 
 Voici les différentes étapes pour mettre en place ce projet.
@@ -39,3 +39,11 @@ API (serveur) :
 Base de données : [Indisponible pour le moment]
 * Installer Cassandra sur votre machine.
 * Importer le script de création de la base. [Indisponible pour le moment]
+
+
+Authentification :
+* L'application ne peux plus fonctionner sur émulateur avec l'authentification
+* The app can't run on phone emulator with authentication.
+* Ouvrir le fichier "www/js/ajax.js" pour modifier l'IP de l'API et la clé (AJAX_IP et AJAX_TOKEN).
+* Ouvrir le fichier "API/basicToken.js" pour indiquer la même clé que dans l'applicaton (TOKEN).
+* Ouvrir le fichier "API/router/index.js" et commenter les lignes 16-17.

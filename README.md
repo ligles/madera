@@ -14,7 +14,7 @@ This project is done during 2 years, in team of 3~4 persons. It is desicive for 
 ###Team
 
 * [Anthony G. aka Jaskar](https://github.com/Jaskar)
-* [A.V. aka](https://github.com/anais49)
+* [A.V. aka anais49](https://github.com/anais49)
 * [G.V. aka ligles](https://github.com/ligles)
 
 
@@ -39,9 +39,16 @@ Mobile application :
 API (server) :
 * Install NodeJS on your computer.
 * Enter "npm install" to install the NodeJS dependencies.
-* Enter "node app.js" to launch the API. (Ctrl + C to stop it).
+* Enter "node app.js" to launch the API.
 
 
 Database : [Unavailable yet]
 * Install the Cassandra database on your computer.
 * Import the database creation script. [Unavailable yet]
+
+
+Authentication :
+* The app can't run on phone emulator with authentication.
+* Open the file "www/js/ajax.js" to set the API IP and a Token (AJAX_IP and AJAX_TOKEN).
+* Open the file "API/basicToken.js" to set the same Token as in the application (TOKEN).
+* Open the file "API/router/index.js" and comment lines 16-17.
