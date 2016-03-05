@@ -6,10 +6,53 @@ var express = require('express'),
     router = express.Router();
 
 // TODO : Remplacer par les requêtes en base de données
+var clients = [
+    {
+        id:"000001",
+        first_name:"Anthony",
+        last_name:"Gée",
+        address_1:"65 rue Maréchal de Lattre de Tassigny",
+        address_2:"V-10",
+        city:"Mont-Saint-Aignan",
+        zip_code:"76130",
+        country:"France",
+        phone:"0609040820",
+        mail:"anthony.gee@viacesi.fr",
+        birth_date:"06/02/1994"
+    },
+    {
+        id:"000002",
+        first_name:"Anaïs",
+        last_name:"Verdier",
+        address_1:"4 rue Parmentier",
+        address_2:"",
+        city:"Le Havre",
+        zip_code:"76600",
+        country:"France",
+        phone:"0607080910",
+        mail:"anais.verdier@viacesi.fr",
+        birth_date:"07/06/1990"
+    },
+    {
+        id:"000003",
+        first_name:"Gilles",
+        last_name:"Vandecandelaere",
+        address_1:"8 impasse de l'écureuil",
+        address_2:"Entrée n°2",
+        city:"Rouen",
+        zip_code:"76000",
+        country:"France",
+        phone:"06099889988",
+        mail:"gilles.vandecandelaere@viacesi.fr",
+        birth_date:"01/01/1970"
+    }
+];
+
 var orders = [
     {
         id_order:"0000000001",
         client_id:"000001",
+        client_first_name:"",
         date_of_issue:"22/02/2016",
         date_of_dispatch:null,
         date_of_reception:null,
@@ -18,6 +61,7 @@ var orders = [
     {
         id_order:"0000000002",
         client_id:"000003",
+        client_first_name:"",
         date_of_issue:"23/03/2016",
         date_of_dispatch:null,
         date_of_reception:null,
@@ -54,8 +98,11 @@ router.get('/search/:text', function(req, res) {
         var result = orders.filter(function(item) {
             if (item.id_order.toUpperCase().search(text) != -1) return true;
             if (item.client_id.toUpperCase().search(text) != -1) return true;
-            //Filter the result with orders in new or treatment state
-            if (item.status_order == "TRT" || item.status_order == "NEW") return true;
+            //Filter the result with orders in uncompleted state
+            if (item.status_order == "VALIDATION" ||
+                item.status_order == "ATTENTE" ||
+                item.status_order == "EN COURS")
+                return true;
             return false;
         });
 
@@ -65,6 +112,18 @@ router.get('/search/:text', function(req, res) {
             res.send(msg204);
         }
         else {
+            for(var i =0; i< result.length; i++)
+            {
+                for(var j =0; j< clients.length; j++)
+                {
+                    if(result[i].client_id == clients[j].id)
+                    {
+                        result[i].client_first_name = clients[j].first_name;
+                        break;
+                    }
+                }
+            }
+
             res.status(200);
             res.header("Access-Control-Allow-Origin", "*");
             res.send(result);
@@ -108,7 +167,7 @@ router.get('/:id', function(req, res) {
 router.post('/', function(req, res) {
 
     if(req.body.id_order == null
-        || req.body.client == null
+        || req.body.client_id == null
         || req.body.date_of_issue == null
         || req.body.status_order == null )
     {
@@ -120,11 +179,19 @@ router.post('/', function(req, res) {
     {
         var newId = orders.length + 1;
         var newOrderId = "0000000000" + newId ;
+
+        var date = new Date();
+        var day = date.getDate().toString();
+        if(day.length < 2) day = "0" + day;
+        var month = (date.getMonth() + 1).toString();
+        if(month.length < 2) month = "0" + month;
+
         orders.push({
             //recover the new id
             id: newOrderId.slice(newOrderId.length-10 ,10),
             client_id:"000003",
-            date_of_issue:Date.now(),
+            client_first_name:"",
+            date_of_issue:day + "/" + month + "/" + date.getFullYear(),
             date_of_dispatch:null,
             date_of_reception:null,
             status_order:"NEW"
@@ -140,7 +207,7 @@ router.post('/', function(req, res) {
 router.post('/update/', function(req, res) {
 
     if(req.body.id_order == null
-        || req.body.client == null
+        || req.body.client_id == null
         || req.body.date_of_issue == null
         || req.body.status_order == null )
     {

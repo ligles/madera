@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' * data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
@@ -9,30 +10,33 @@
     <title>MADERA - COMMANDES</title>
 
     <link rel="stylesheet" type="text/css" href="css/base.css">
-    <link rel="stylesheet" type="text/css" href="css/projets.css">
 </head>
 <body>
 <div class="app">
     <div id="topMenu">
         <img id="return" src="assets/img/return.png">
-        <h1>COMMANDES</h1>
+        <h1>COMMANDES EN COURS</h1>
         <img id="menu" src="assets/img/menu.png">
+        <div class="separationLine"> </div>
     </div>
     <div id="content">
         <br>
         <br>
-        <div class="subtitle">RECHERCHE DE COMMANDES</div>
+        <div class="subtitle">RECHERCHE</div>
+        <div class="subtitle" id="search_text"></div>
 
         <div class="separationLine"> </div>
 
-        <input id="search_content" placeholder="NOM / REF" maxlength="16">
-        <div id="search_go" class="button">RECHERCHER</div>
+        <div id="results_list">
+        </div>
     </div>
 </div>
-<script type="text/javascript" src="js/search_orders.js"></script>
+
+<!--SCRIPTS-->
+<script type="text/javascript" src="js/search_orders_results.js"></script>
 
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
 </body>
 </html>
