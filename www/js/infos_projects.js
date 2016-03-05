@@ -95,6 +95,14 @@ var initPage = function() {
                     div.appendChild(span_statut);
 
                     document.getElementById("quotations_list").appendChild(div);
+
+                    div.onclick = function(evt)
+                    {
+                        window.localStorage.setItem("quotation_id", quotation.id);
+                        window.localStorage.setItem("add_quotation", null);
+
+                        window.location.href = "infos_quotations.html"
+                    }
                 });
 
                 document.getElementById("add_new_quotation").onclick = function() {
@@ -122,7 +130,6 @@ var initPage = function() {
                         "projects",
                         params,
                         function(result) {
-                            console.log(result);
                             alert("Update OK! " + result);
                         },
                         function(status, text) {

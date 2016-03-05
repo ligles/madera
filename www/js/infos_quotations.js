@@ -181,7 +181,6 @@ var initPage = function() {
                             "quotations",
                             params,
                             function(result) {
-                                console.log(result);
                                 alert("Update OK! " + result);
                             },
                             function(status, text) {

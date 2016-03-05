@@ -10,7 +10,6 @@ var initPage = function() {
             "quotations",
             search_quotation,
             function(data) {
-                console.log(data);
 
                 data.forEach(function(quotation) {
 

@@ -62,8 +62,6 @@ var initPage = function() {
                 document.getElementById("infos_first_name").value = data.first_name;
                 document.getElementById("infos_birth_date").value = data.birth_date;
 
-                console.log(data.projects_list);
-
                 data.projects_list.forEach(function(project) {
 
                     var div = document.createElement('div');
@@ -84,6 +82,14 @@ var initPage = function() {
                     div.appendChild(span_date);
 
                     document.getElementById("projects_list").appendChild(div);
+
+                    div.onclick = function(evt)
+                    {
+                        window.localStorage.setItem("project_id", project.id);
+                        window.localStorage.setItem("add_project", null);
+
+                        window.location.href = "infos_projects.html";
+                    }
                 });
 
                 document.getElementById("add_new_project").onclick = function() {
@@ -121,7 +127,6 @@ var initPage = function() {
                         "clients",
                         params,
                         function(result) {
-                            console.log(result);
                             alert("Update OK! " + result);
                         },
                         function(status, text) {
