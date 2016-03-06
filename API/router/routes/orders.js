@@ -56,7 +56,7 @@ var orders = [
         date_of_issue:"22/02/2016",
         date_of_dispatch:null,
         date_of_reception:null,
-        status_order:"TRT"
+        status_order:"TRAITEMENT"
     },
     {
         id_order:"0000000002",
@@ -65,7 +65,7 @@ var orders = [
         date_of_issue:"23/03/2016",
         date_of_dispatch:null,
         date_of_reception:null,
-        status_order:"NEW"
+        status_order:"EN ATTENTE"
     }
 ];
 

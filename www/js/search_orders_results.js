@@ -15,20 +15,26 @@ var initPage = function() {
                 data.forEach(function(order) {
                     var div = document.createElement('div');
                     div.setAttribute('class', 'one_search_result');
-                    div.setAttribute('id', order.id);
-
-                    var span_name = document.createElement('span');
-                    span_name.innerText = "-> " + order.project_name;
+                    div.setAttribute('id', order.id_order);
 
                     var span_id = document.createElement('span');
-                    span_id.innerText = "N°" + order.id;
+                    span_id.innerText = "N°" + order.client_id;
 
-                    var span_date = document.createElement('span');
-                    span_date.innerText = order.date;
+                    var span_client = document.createElement('span');
+                    span_client.innerText = "CLIENT" + order.client_id +
+                        " : " + order.client_first_name;
 
-                    div.appendChild(span_name);
+                    var span_date_issue = document.createElement('span');
+                    span_date_issue.innerText = order.date_of_issue;
+
+                    var span_status = document.createElement('span');
+                    span_status.innerText = order.status_order;
+
                     div.appendChild(span_id);
-                    div.appendChild(span_date);
+                    div.appendChild(span_client);
+                    div.appendChild(span_date_issue);
+                    div.appendChild(span_status);
+
 
                     document.getElementById("results_list").appendChild(div);
                 });
