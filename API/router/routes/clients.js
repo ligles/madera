@@ -82,7 +82,7 @@ router.get('/:id', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(400);
+        res.send('400');
     }
     else
     {
@@ -97,7 +97,7 @@ router.get('/:id', function(req, res) {
         if(result == 0) {
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
-            res.send(204);
+            res.send('204');
         }
         else {
             res.status(200);
@@ -113,7 +113,7 @@ router.get('/search/:text', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(400);
+        res.send('400');
     }
     else
     {
@@ -129,7 +129,7 @@ router.get('/search/:text', function(req, res) {
         if(result == 0) {
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
-            res.send(204);
+            res.send('204');
         }
         else {
             res.status(200);
@@ -148,7 +148,7 @@ router.post('/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(400);
+        res.send('400');
     }
     else
     {
@@ -168,7 +168,7 @@ router.post('/', function(req, res) {
 
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(200);
+        res.send('200');
     }
 });
 
@@ -182,7 +182,7 @@ router.post('/update/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(400);
+        res.send('400');
     }
     else
     {
@@ -195,7 +195,7 @@ router.post('/update/', function(req, res) {
 
                 res.status(200);
                 res.header("Access-Control-Allow-Origin", "*");
-                res.send(200);
+                res.send('200');
 
                 return;
             }
@@ -203,7 +203,7 @@ router.post('/update/', function(req, res) {
 
         res.status(204);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(204);
+        res.send('204');
     }
 });
 
