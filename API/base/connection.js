@@ -1,9 +1,10 @@
 /**
  * Created by ligles on 07/03/16.
  */
+var config = require('../config');
 var cassandra = require('cassandra-driver');
 var async = require('async');
-var keyspace = "madera";
+
 module.exports = {
 
     query: function (query,params) {
@@ -14,7 +15,7 @@ module.exports = {
         var tquery = 'SELECT email, last_name FROM user_profiles WHERE key=?';
 
         //Connect to the cluster
-        var client = new cassandra.Client({contactPoints: ['82.235.3.251'], keyspace:keyspace });
+        var client = new cassandra.Client({contactPoints: [config.bdd.host], keyspace:config.bdd.keyspace });
 
         client.execute(tquery, ['guy'], function(err, result) {
             console.log(err);
@@ -38,8 +39,8 @@ module.exports = {
     init: function(res){
 
 
-        var client = new cassandra.Client({contactPoints: ['82.235.3.251']});
-        client.execute("CREATE KEYSPACE IF NOT EXISTS " + keyspace + " WITH replication " +
+        var client = new cassandra.Client({contactPoints: [config.bdd.host]});
+        client.execute("CREATE KEYSPACE IF NOT EXISTS " + config.bdd.keyspace + " WITH replication " +
             "= {'class' : 'SimpleStrategy', 'replication_factor' : 3};",
 
             function (err) {
@@ -49,7 +50,7 @@ module.exports = {
                         console.log("Keyspace created");
                         async.parallel([
                             function(next) {
-                                client.execute('CREATE TABLE IF NOT EXISTS '+ keyspace+'.clients (' +
+                                client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.clients (' +
                                     'id uuid PRIMARY KEY,' +
                                     'first_name varchar,' +
                                     'last_name varchar,' +
@@ -64,7 +65,7 @@ module.exports = {
                                     next);
                             } ,
                              function(next) {
-                             client.execute('CREATE TABLE IF NOT EXISTS '+ keyspace+'.projects (' +
+                             client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.projects (' +
                              'id uuid PRIMARY KEY,' +
                              'project_name varchar,' +
                              'date varchar,' +
@@ -74,7 +75,7 @@ module.exports = {
                              next);
                              },
                             function(next) {
-                                client.execute('CREATE TABLE IF NOT EXISTS '+ keyspace+'.orders (' +
+                                client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.orders (' +
                                     'id uuid PRIMARY KEY,' +
                                     'client_id varchar,' +
                                     'client_first_name varchar,' +
@@ -85,7 +86,7 @@ module.exports = {
                                     ');',
                                     next);
                             },function(next) {
-                                client.execute('CREATE TABLE IF NOT EXISTS '+ keyspace+'.quotations (' +
+                                client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.quotations (' +
                                     'id uuid PRIMARY KEY,' +
                                     'date varchar,' +
                                     'project_name varchar,' +
@@ -113,7 +114,7 @@ module.exports = {
     drop: function(res){
 
         var client = new cassandra.Client({contactPoints: ['82.235.3.251']});
-        client.execute("DROP KEYSPACE IF EXISTS " + keyspace + ";",
+        client.execute("DROP KEYSPACE IF EXISTS " + config.bdd.keyspace + ";",
             afterExecution('Error: ', 'Keyspace droped.', res));
 
 

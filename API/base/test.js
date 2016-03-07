@@ -4,11 +4,11 @@
 
 
 module.exports = function (app) {
-    var keyspace = "madera";
+
     var cassandra = require('cassandra-driver');
     var async = require('async');
-    var client = new cassandra.Client({contactPoints: ['82.235.3.251']});
-    client.execute("CREATE KEYSPACE IF NOT EXISTS " + keyspace + " WITH replication " +
+    var client = new cassandra.Client({contactPoints: [config.bdd.host]});
+    client.execute("CREATE KEYSPACE IF NOT EXISTS " + config.bdd.keyspace + " WITH replication " +
         "= {'class' : 'SimpleStrategy', 'replication_factor' : 3};",
 
         function (err, result) {
@@ -26,7 +26,7 @@ module.exports = function (app) {
 
    async.parallel([
         function(next) {
-            client.execute('CREATE TABLE IF NOT EXISTS '+ keyspace+'.clients (' +
+            client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.clients (' +
                 'id uuid PRIMARY KEY,' +
                 'first_name varchar,' +
                 'last_name varchar,' +
@@ -41,7 +41,7 @@ module.exports = function (app) {
                 next);
         },
          function(next) {
-         client.execute('CREATE TABLE IF NOT EXISTS '+ keyspace+'.projects (' +
+         client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.projects (' +
          'id uuid PRIMARY KEY,' +
          'first_name varchar,' +
          'last_name varchar,' +
@@ -56,7 +56,7 @@ module.exports = function (app) {
          next);
          },
          function(next) {
-         client.execute('CREATE TABLE IF NOT EXISTS '+ keyspace+'.playlists (' +
+         client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.playlists (' +
          'id uuid,' +
          'title text,' +
          'album text,' +

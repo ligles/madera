@@ -3,4 +3,5 @@ www/.idea/
 hooks/
 API/.idea/
 API/node_modules/
+API/config.js
 .idea/
