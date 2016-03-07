@@ -3,7 +3,9 @@
  ************************************************************************/
 
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    config = require ('../../config'),
+    base = require('../../base/connection');
 
 // TODO : Remplacer par les requêtes en base de données
 var clients = [
@@ -113,38 +115,52 @@ router.get('/:id', function(req, res) {
 
 // Search client by text / ref
 router.get('/search/:text', function(req, res) {
+    console.log("enter");
     if(req.params.text == null)
     {
+        console.log("null");
+
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
         res.send(msg400);
     }
     else
     {
-        var text = req.params.text.toUpperCase();
+        //var text = req.params.text.toUpperCase();
 
-        var result = clients.filter(function(item) {
+         base.query('getClient',req,res);
+
+
+        /*var result = clients.filter(function(item) {
             if (item.id.toUpperCase().search(text) != -1) return true;
             if (item.first_name.toUpperCase().search(text) != -1) return true;
             if (item.last_name.toUpperCase().search(text) != -1) return true;
             return false;
         });
 
+
+
+
+
+
         if(result == 0) {
+            console.log("result == 0");
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
             res.send(msg204);
         }
         else {
+
+
             res.status(200);
             res.header("Access-Control-Allow-Origin", "*");
             res.send(result);
-        }
+        } */
+
     }
 });
 // Add client
 router.post('/', function(req, res) {
-
 
 
 
@@ -164,9 +180,9 @@ router.post('/', function(req, res) {
     {
 
 
+        base.query('upsertClient',req,res);
 
-
-        clients.push({
+       /* clients.push({
             id: "00000" + (clients.length + 1),
             first_name: req.body.first_name,
             last_name: req.body.last_name,
@@ -186,7 +202,7 @@ router.post('/', function(req, res) {
 
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg200);
+        res.send(msg200);*/
     }
 });
 

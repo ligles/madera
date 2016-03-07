@@ -7,33 +7,84 @@ var async = require('async');
 
 module.exports = {
 
-    query: function (query,params) {
+    query: function (query,req,res) {
 
 
-
-
-        var tquery = 'SELECT email, last_name FROM user_profiles WHERE key=?';
-
-        //Connect to the cluster
         var client = new cassandra.Client({contactPoints: [config.bdd.host], keyspace:config.bdd.keyspace });
+        var data = "foo";
+        switch(query) {
+            case 'upsertClient':
 
-        client.execute(tquery, ['guy'], function(err, result) {
-            console.log(err);
-            console.log('got user profile with email ' + result.rows[0].email);
-        });
 
-        /*
-        client.connect(function (err) {
-            if (err) {
-                client.shutdown();
-                return console.error('There was an error when connecting', err);
-            }
-            console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
-            console.log('Keyspaces: %j', Object.keys(client.metadata.keyspaces));
-            //console.log('Shutting down');
-            // client.shutdown();
-        });
-*/
+                var upsertClient = 'INSERT INTO '+config.bdd.keyspace+'.clients (id, first_name, last_name, address_1,address_2,city,zip_code,country,phone, mail, birth_date)  '
+                    + 'VALUES(?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?);';
+                var id = null;
+                if ( ! req.body.hasOwnProperty('id')) {
+                    id = cassandra.types.uuid();
+                } else {
+                    id = req.body.id;
+                }
+
+                client.execute(upsertClient,
+                    [id, req.body.first_name, req.body.last_name, null, null, null,null, null, null,null,req.body.birth_date],
+                    afterExecution('Error: ', 'Client ' + req.body.first_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
+
+                break;
+
+
+            case 'deleteClient':
+                console.log('deleteclient');
+                break;
+
+
+            case 'getClient':
+                /*console.log('getClient');
+                  client.execute("SELECT id, first_name, last_name, birth_date FROM "+config.bdd.keyspace+".clients WHERE last_name = '"+req.params.text+"'; ", function (err, result) {
+                  if (!err){
+
+                        if ( result.rows.length > 0 ) {
+                            data = result.rows[0];
+                            var user = result.rows[0];
+                           // return user;
+                            console.log("id =  %s, name = %s, date = %d", user.id,user.first_name, user.birth_date);
+                            return  "hello";
+                        } else {
+                            console.log("No results");
+                            //return 0;
+                        }
+                    }else{
+                        console.log(err);
+                    }
+
+
+                    // Run next function in series
+                   // callback(err, null);
+
+                 });*/
+
+
+
+                client.execute("SELECT id, first_name, last_name, birth_date FROM "+config.bdd.keyspace+".clients WHERE last_name = '"+req.params.text+"'; ", function (err, result) {
+                    if (err) {
+                        res.status(404).send({ msg : 'client not found.' });
+                    } else {
+                        
+                        res.send(result.rows);
+                    }
+                });
+
+
+
+
+
+
+                break;
+            default:
+                console.log('default');
+                break;
+        }
+        //console.log("id data =  %s, name = %s, date = %d", data.id,data.first_name, data.birth_date)
+        console.log(data);
 
     },
     init: function(res){
@@ -51,16 +102,18 @@ module.exports = {
                         async.parallel([
                             function(next) {
                                 client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.clients (' +
-                                    'id uuid PRIMARY KEY,' +
+                                    'id uuid,' +
                                     'first_name varchar,' +
                                     'last_name varchar,' +
                                     'address_1 varchar,' +
                                     'address_2 varchar,' +
+                                    'city varchar,' +
                                     'zip_code varchar,' +
                                     'country varchar,' +
                                     'phone int,' +
                                     'mail varchar,' +
-                                    'birth_date varchar' +
+                                    'birth_date varchar,' +
+                                    'PRIMARY KEY (last_name, first_name, id,  birth_date)' +
                                     ');',
                                     next);
                             } ,
