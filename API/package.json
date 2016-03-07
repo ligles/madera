@@ -4,7 +4,9 @@
   "description": "API for the Madera project.",
   "dependencies": {
     "express": "latest",
-    "body-parser": "latest"
+    "body-parser": "latest",
+    "cassandra-driver":"latest",
+    "async":"latest"
   },
   "license": "MIT",
   "repository": {
