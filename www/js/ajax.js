@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------
 //                   PARAMETERS
 
-var AJAX_IP = "localhost:3000";
+var AJAX_IP = "192.168.0.36:3000";
 var AJAX_TOKEN = "MADERA";
 
 //-----------------------------------------------------------------------
@@ -24,7 +24,7 @@ function ajax(query, category, param, onSuccess, onError) {
                 onSuccess(JSON.parse(xhttp.response));
             }
             else if (xhttp.status == 0) {
-                onError("connexion", "Veuillez activer une connexion réseau puis réessayer.");
+                onError("connexion", "Veuillez activer une connexion rï¿½seau puis rï¿½essayer.");
             }
             else {
                 onError(xhttp.status, xhttp.statusText);
@@ -67,7 +67,7 @@ function ajax(query, category, param, onSuccess, onError) {
             break;
 
         default :
-            onError('000', 'Mauvaise requête.');
+            onError('000', 'Mauvaise requï¿½te.');
             break;
     }
 }

@@ -142,9 +142,15 @@ router.get('/search/:text', function(req, res) {
         }
     }
 });
-
 // Add client
 router.post('/', function(req, res) {
+
+
+
+
+
+
+
 
     if(req.body.first_name == null
         || req.body.last_name == null
@@ -156,6 +162,10 @@ router.post('/', function(req, res) {
     }
     else
     {
+
+
+
+
         clients.push({
             id: "00000" + (clients.length + 1),
             first_name: req.body.first_name,
@@ -169,6 +179,10 @@ router.post('/', function(req, res) {
             mail: "",
             birth_date: req.body.birth_date
         });
+
+
+
+
 
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
