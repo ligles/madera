@@ -50,5 +50,6 @@ Database : [Unavailable yet]
 Authentication :
 * The app can't run on phone emulator with authentication.
 * Open the file "www/js/ajax.js" to set the API IP and a Token (AJAX_IP and AJAX_TOKEN).
+* On the same file "www/js/ajax.js", uncomment lines 76-80 (request headers)
 * Open the file "API/basicToken.js" to set the same Token as in the application (TOKEN).
 * Open the file "API/router/index.js" and comment lines 16-17.

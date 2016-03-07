@@ -5,13 +5,13 @@
 var express = require('express'),
     router = express.Router();
 
-// TODO : Remplacer par les requêtes en base de données
+// TODO : Remplacer par les requï¿½tes en base de donnï¿½es
 var clients = [
     {
         id:"000001",
         first_name:"Anthony",
-        last_name:"Gée",
-        address_1:"65 rue Maréchal de Lattre de Tassigny",
+        last_name:"Gï¿½e",
+        address_1:"65 rue Marï¿½chal de Lattre de Tassigny",
         address_2:"V-10",
         city:"Mont-Saint-Aignan",
         zip_code:"76130",
@@ -22,7 +22,7 @@ var clients = [
     },
     {
         id:"000002",
-        first_name:"Anaïs",
+        first_name:"Anaï¿½s",
         last_name:"Verdier",
         address_1:"4 rue Parmentier",
         address_2:"",
@@ -37,8 +37,8 @@ var clients = [
         id:"000003",
         first_name:"Gilles",
         last_name:"Vandecandelaere",
-        address_1:"8 impasse de l'écureuil",
-        address_2:"Entrée n°2",
+        address_1:"8 impasse de l'ï¿½cureuil",
+        address_2:"Entrï¿½e nï¿½2",
         city:"Rouen",
         zip_code:"76000",
         country:"France",
@@ -69,10 +69,6 @@ var orders = [
     }
 ];
 
-var msg200 = JSON.stringify("Query done."),
-    msg204 = JSON.stringify("No results."),
-    msg400 = JSON.stringify("Missing parameters.");
-
 /************************************************************************
  *                                ROUTES                                *
  ************************************************************************/
@@ -90,7 +86,7 @@ router.get('/search/:text', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else{
         var text = req.params.text.toUpperCase();
@@ -109,7 +105,7 @@ router.get('/search/:text', function(req, res) {
         if(result == 0) {
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
-            res.send(msg204);
+            res.send(204);
         }
         else {
             for(var i =0; i< result.length; i++)
@@ -138,7 +134,7 @@ router.get('/:id', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else
     {
@@ -153,7 +149,7 @@ router.get('/:id', function(req, res) {
         if(result == 0) {
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
-            res.send(msg204);
+            res.send(204);
         }
         else {
             res.status(200);
@@ -173,7 +169,7 @@ router.post('/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else
     {
@@ -199,7 +195,7 @@ router.post('/', function(req, res) {
 
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg200);
+        res.send(200);
     }
 });
 
@@ -213,7 +209,7 @@ router.post('/update/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else
     {
@@ -229,7 +225,7 @@ router.post('/update/', function(req, res) {
 
                 res.status(200);
                 res.header("Access-Control-Allow-Origin", "*");
-                res.send(msg200);
+                res.send(200);
 
                 return;
             }
@@ -237,7 +233,7 @@ router.post('/update/', function(req, res) {
 
         res.status(204);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg204);
+        res.send(204);
     }
 });
 

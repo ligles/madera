@@ -24,10 +24,15 @@ function ajax(query, category, param, onSuccess, onError) {
                 onSuccess(JSON.parse(xhttp.response));
             }
             else if (xhttp.status == 0) {
-                onError("connexion", "Veuillez activer une connexion réseau puis réessayer.");
+                onError("connexion", "Please, turn on data connection, then try again.");
             }
             else {
-                onError(xhttp.status, xhttp.statusText);
+                var msg = [];
+                msg[200] = JSON.stringify("Query done.");
+                msg[204] = JSON.stringify("No result.");
+                msg[400] = JSON.stringify("Missing parameter.");
+
+                onError(xhttp.status, msg[xhttp.status]);
             }
         }
     };
@@ -68,11 +73,11 @@ function ajax(query, category, param, onSuccess, onError) {
     }
 
     xhttp.open(xhttpType, xhttpLink, true);
-    xhttp.setRequestHeader("Cache-Control", "no-cache");
-    xhttp.setRequestHeader("Pragma", "no-cache");
-    xhttp.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("token", AJAX_TOKEN);
+    //xhttp.setRequestHeader("Cache-Control", "no-cache");
+    //xhttp.setRequestHeader("Pragma", "no-cache");
+    //xhttp.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
+    //xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //xhttp.setRequestHeader("token", AJAX_TOKEN);
     if(xhttpParam) xhttp.send(param);
     else xhttp.send();
 

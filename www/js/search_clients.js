@@ -10,6 +10,9 @@ var initPage = function() {
 
             window.location.href = "search_clients_results.html";
         }
+        else {
+            alert('Champs de recherche vide.');
+        }
     };
 
     document.getElementById("add_new").onclick = function() {

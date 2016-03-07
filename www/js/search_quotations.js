@@ -10,5 +10,8 @@ var initPage = function() {
 
             window.location.href = "search_quotations_results.html";
         }
+        else {
+            alert('Champs de recherche vide.');
+        }
     };
 };

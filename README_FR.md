@@ -43,7 +43,7 @@ Base de données : [Indisponible pour le moment]
 
 Authentification :
 * L'application ne peux plus fonctionner sur émulateur avec l'authentification
-* The app can't run on phone emulator with authentication.
 * Ouvrir le fichier "www/js/ajax.js" pour modifier l'IP de l'API et la clé (AJAX_IP et AJAX_TOKEN).
+* Dans le même fichier "www/js/ajax.js", décommenter les lignes 76-80 (request headers)
 * Ouvrir le fichier "API/basicToken.js" pour indiquer la même clé que dans l'applicaton (TOKEN).
 * Ouvrir le fichier "API/router/index.js" et commenter les lignes 16-17.

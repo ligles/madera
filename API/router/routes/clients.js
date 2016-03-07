@@ -64,10 +64,6 @@ var projects = [
     }
 ];
 
-var msg200 = JSON.stringify("Query done."),
-    msg204 = JSON.stringify("No results."),
-    msg400 = JSON.stringify("Missing parameters.");
-
 /************************************************************************
  *                                ROUTES                                *
  ************************************************************************/
@@ -86,7 +82,7 @@ router.get('/:id', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else
     {
@@ -101,7 +97,7 @@ router.get('/:id', function(req, res) {
         if(result == 0) {
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
-            res.send(msg204);
+            res.send(204);
         }
         else {
             res.status(200);
@@ -117,7 +113,7 @@ router.get('/search/:text', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else
     {
@@ -133,7 +129,7 @@ router.get('/search/:text', function(req, res) {
         if(result == 0) {
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
-            res.send(msg204);
+            res.send(204);
         }
         else {
             res.status(200);
@@ -152,7 +148,7 @@ router.post('/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else
     {
@@ -172,7 +168,7 @@ router.post('/', function(req, res) {
 
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg200);
+        res.send(200);
     }
 });
 
@@ -186,7 +182,7 @@ router.post('/update/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg400);
+        res.send(400);
     }
     else
     {
@@ -199,7 +195,7 @@ router.post('/update/', function(req, res) {
 
                 res.status(200);
                 res.header("Access-Control-Allow-Origin", "*");
-                res.send(msg200);
+                res.send(200);
 
                 return;
             }
@@ -207,7 +203,7 @@ router.post('/update/', function(req, res) {
 
         res.status(204);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(msg204);
+        res.send(204);
     }
 });
 
