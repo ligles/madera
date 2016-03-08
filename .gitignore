@@ -4,3 +4,4 @@ hooks/
 API/.idea/
 API/node_modules/
 .idea/
+/API/config.js

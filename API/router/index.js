@@ -31,6 +31,7 @@ module.exports = function (app) {
     app.use('/orders', require('./routes/orders'));
     app.use('/quotations', require('./routes/quotations'));
     app.use('/projects', require('./routes/projects'));
+    app.use('/dbase', require('./routes/dbase'));
 
 
     // ERRORS
@@ -67,13 +68,13 @@ module.exports = function (app) {
 // res.json(q);                     // Envoyer du JSON
 
 // GET
-// app.get('/link/:param&:param2')  // Récupérer des paramètres
-// req.params.id                    // Récupérer un paramètre
+// app.get('/link/:param&:param2')  // Rï¿½cupï¿½rer des paramï¿½tres
+// req.params.id                    // Rï¿½cupï¿½rer un paramï¿½tre
 
 // POST
 // app.post('/link')
 // req.body.hasOwnProperty('text')  // Test si la variable est post
-// requ.body.text                   // Récupérer le contenu de la variable post
+// requ.body.text                   // Rï¿½cupï¿½rer le contenu de la variable post
 
 // CRUD
 //  /api/bears	        GET	Get all the bears.

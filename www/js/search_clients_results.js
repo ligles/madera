@@ -10,6 +10,7 @@ var initPage = function() {
             "clients",
             search_client,
             function(data) {
+
                 data.forEach(function(customer) {
                     var div = document.createElement('div');
                     div.setAttribute('class', 'one_search_result');

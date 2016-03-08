@@ -1,9 +1,9 @@
 ##Projet MADERA
 
 
-Le projet "MADERA" est un projet réalisé dans le cadre de la formation "Responsable en Ingénierie des logiciels" (Bac+4) dispensée en alternance au CESI.
+Le projet "MADERA" est un projet rÃ©alisÃ© dans le cadre de la formation "Responsable en IngÃ©nierie des logiciels" (Bac+4) dispensÃ©e en alternance au CESI.
 
-Ce projet est mené sur 2 ans, en groupe de 3~4 personnes, et est déterminant pour le diplôme. Le projet n'ayant rien de confidentiel, nous avons choisi de le partager sur Github.
+Ce projet est menÃ© sur 2 ans, en groupe de 3~4 personnes, et est dÃ©terminant pour le diplÃ©me. Le projet n'ayant rien de confidentiel, nous avons choisi de le partager sur Github.
 
 ###Team
 
@@ -17,33 +17,54 @@ Ce projet est mené sur 2 ans, en groupe de 3~4 personnes, et est déterminant pou
 Ce projet comprend trois parties :
 * Application mobile : Cordova / Phonegap
 * API : NodeJS
-* Base de données : Cassandra
+* Base de donnÃ©es : Cassandra
 
 
 ###Comment l'installer ?
 
-Voici les différentes étapes pour mettre en place ce projet.
+
+Voici les diffÃ©rentes Ã©tapes pour mettre en place ce projet.
+
+fichier de config:
+* Creer un fichier de config "config.js" dans le repertoire API.
+
+***********************************************************************************
+            ex:
+            var config = {};
+
+            config.bdd = {};
+            config.api = {};
+
+            config.bdd.host = '';
+            config.bdd.port = ;
+            config.bdd.keyspace = '';
+            config.api.port = process.env.PORT || 3000;
+            config.api.host = '';
+            config.api.token = '';
+
+            module.exports = config;
+**********************************************************************************
 
 
 Application mobile :
 * Installer cordova / phonegap sur votre machine.
-* Lancer la commande "cordova run wp8" / "android" / "ios" pour déployer sur votre périphérique mobile.
+* Lancer la commande "cordova run wp8" / "android" / "ios" pour dÃ©ployer sur votre pÃ©riphÃ©rique mobile.
 
 
 API (serveur) :
 * Installer NodeJS sur votre machine.
-* Lancer la commande "npm install" pour installer les dépendances.
-* Lancer la commande "node app.js" pour lancer le serveur. (Ctrl + C pour l'arrêter).
+* Lancer la commande "npm install" pour installer les dÃ©pendances.
+* Lancer la commande "node app.js" pour lancer le serveur. (Ctrl + C pour l'arrÃ©ter).
 
 	
-Base de données : [Indisponible pour le moment]
+Base de donnÃ©es : [Indisponible pour le moment]
 * Installer Cassandra sur votre machine.
-* Importer le script de création de la base. [Indisponible pour le moment]
+* Importer le script de crÃ©ation de la base. [Indisponible pour le moment]
 
 
 Authentification :
-* L'application ne peux plus fonctionner sur émulateur avec l'authentification
-* Ouvrir le fichier "www/js/ajax.js" pour modifier l'IP de l'API et la clé (AJAX_IP et AJAX_TOKEN).
-* Dans le même fichier "www/js/ajax.js", décommenter les lignes 76-80 (request headers)
-* Ouvrir le fichier "API/basicToken.js" pour indiquer la même clé que dans l'applicaton (TOKEN).
+* L'application ne peux plus fonctionner sur Ã©mulateur avec l'authentification
+* Ouvrir le fichier "www/js/ajax.js" pour modifier l'IP de l'API et la clÃ© (AJAX_IP et AJAX_TOKEN).
+* Dans le mÃ©me fichier "www/js/ajax.js", dÃ©commenter les lignes 76-80 (request headers)
+* Ouvrir le fichier "API/basicToken.js" pour indiquer la mÃ©me clÃ© que dans l'applicaton (TOKEN).
 * Ouvrir le fichier "API/router/index.js" et commenter les lignes 16-17.
