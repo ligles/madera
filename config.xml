@@ -28,8 +28,24 @@
 	
 	<!-- ICONS & SPLASHSCREEN-->
 	
+	<preference name="orientation" value="portrait" />
+
+	<platform name="android">
+		<splash src="res/screens/android/screen-hdpi-portrait.png" density="port-hdpi"/>
+		<splash src="res/screens/android/screen-ldpi-portrait.png" density="port-ldpi"/>
+		<splash src="res/screens/android/screen-mdpi-portrait.png" density="port-mdpi"/>
+		<splash src="res/screens/android/screen-xhdpi-portrait.png" density="port-xhdpi"/>
+	</platform>
+	<icon src="res/icons/android/icon-36-ldpi.png" platform="android" density="ldpi" />
+	<icon src="res/icons/android/icon-48-mdpi.png" platform="android" density="mdpi" />
+	<icon src="res/icons/android/icon-72-hdpi.png" platform="android" density="hdpi" />
+	<icon src="res/icons/android/icon-96-xhdpi.png" platform="android" density="xhdpi" />
+	<icon src="res/icons/android/icon-144-xxhdpi.png" platform="android" density="xxhdpi" />
+	<icon src="res/icons/android/icon-192-xxxhdpi.png" platform="android" density="xxxhdpi" />
+		
 	<platform name="wp8">
-		<icon src="www/assets/icons/icon.png" width="512" height="512" />
-		<splash src="www/assets/icons/splash.png" width="768" height="1280" />
-     </platform>
+          <icon src="res/icons/wp8/ApplicationIcon.png" width="99" height="99" />
+          <icon src="res/icons/wp8/Background.png" width="159" height="159" />
+		  <splash src="res/screens/wp8/Splash.png" width="768" height="1280" />
+ </platform>
 </widget>
