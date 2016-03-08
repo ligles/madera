@@ -89,9 +89,6 @@ module.exports = {
                     });
 
 
-                    /*client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE last_name = '" + req.params.text + "'; ", {prepare : true},function (err, result) {
-
-                    });*/
 
                 }else{
                     console.log('getclient with id = ' + req.params.id );
@@ -105,20 +102,6 @@ module.exports = {
                         }
                     });
 
-
-
-
-                    /*
-                    client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE id = '" + req.params.id + "'; ", function (err, result) {
-                        if (err) {
-                            console.log(err);
-                            res.status(404).send({msg: 'client not found.'});
-                        } else {
-
-                            res.send(result.rows[0]);
-                            console.log(result.rows[0]);
-                        }
-                    });*/
 
                 }
 
@@ -279,10 +262,6 @@ function afterExecution( errorMessage, successMessage, res) {
 
 function getLastId(table,client,callback){
     var id = null;
-
-
-       // client.execute("SELECT id, dateof(insert_time) FROM " + config.bdd.keyspace + "."+table+" LIMIT 1;", [req.params.text],{prepare : true}, function (err, result) {
-
 
         client.execute("SELECT id FROM " + config.bdd.keyspace + "."+table+" LIMIT 1; ",function (err, result) {
 
