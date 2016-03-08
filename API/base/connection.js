@@ -76,18 +76,39 @@ module.exports = {
 
                 if ( ! req.params.hasOwnProperty('id')) {
                     console.log('getclient without  id');
-                    client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE last_name = '" + req.params.text + "'; ", function (err, result) {
+
+
+                    client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE last_name  = ?;", [req.params.text],{prepare : true}, function (err, result) {
                         if (err) {
                             console.log(err);
                             res.status(404).send({msg: 'client not found.'});
                         } else {
-
+                            console.log(result);
                             res.send(result.rows);
                         }
                     });
 
+
+                    /*client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE last_name = '" + req.params.text + "'; ", {prepare : true},function (err, result) {
+
+                    });*/
+
                 }else{
                     console.log('getclient with id = ' + req.params.id );
+                    client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE id  = ? ALLOW FILTERING;", [req.params.id],{prepare : true}, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.status(404).send({msg: 'client not found.'});
+                        } else {
+                            console.log(result);
+                            res.send(result.rows[0]);
+                        }
+                    });
+
+
+
+
+                    /*
                     client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE id = '" + req.params.id + "'; ", function (err, result) {
                         if (err) {
                             console.log(err);
@@ -97,7 +118,7 @@ module.exports = {
                             res.send(result.rows[0]);
                             console.log(result.rows[0]);
                         }
-                    });
+                    });*/
 
                 }
 
@@ -140,8 +161,8 @@ module.exports = {
                                     'birth_date varchar,' +
                                     'last_update_time timeuuid,' +
                                     'insert_time timeuuid,' +
-                                    'PRIMARY KEY ((id_client),insert_time, id, last_name, mail)' +
-                                    ')WITH CLUSTERING ORDER BY (insert_time DESC);',
+                                    'PRIMARY KEY ((id_client),id,last_name, mail)' +
+                                    ')WITH CLUSTERING ORDER BY (id DESC);',
                                     next);
                             } ,
                              function(next) {
@@ -259,15 +280,20 @@ function afterExecution( errorMessage, successMessage, res) {
 function getLastId(table,client,callback){
     var id = null;
 
-    client.execute("SELECT id, dateof(insert_time) FROM " + config.bdd.keyspace + "."+table+" LIMIT 1; ", function (err, result) {
+
+       // client.execute("SELECT id, dateof(insert_time) FROM " + config.bdd.keyspace + "."+table+" LIMIT 1;", [req.params.text],{prepare : true}, function (err, result) {
+
+
+        client.execute("SELECT id FROM " + config.bdd.keyspace + "."+table+" LIMIT 1; ",function (err, result) {
 
 
         if (err) {
             console.log(err);
            callback(err);
         } else {
-
+            //console.log("get last id" +result);
             if ( result.rows.length > 0 ) {
+                console.log("get last id" +result.rows[0].id);
                 id = result.rows[0].id + 1;
             }else{
                 id = 1;
