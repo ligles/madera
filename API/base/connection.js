@@ -15,22 +15,56 @@ module.exports = {
         switch(query) {
             case 'upsertClient':
 
+                var timeId = cassandra.types.TimeUuid.now();
+                var insert,update = null;
+                var upsertClient = 'INSERT INTO '+config.bdd.keyspace+'.clients (id_client, id, first_name, last_name, address_1,address_2,city,zip_code,country,phone, mail, birth_date, last_update_time, insert_time)'
+                    + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
 
-                var upsertClient = 'INSERT INTO '+config.bdd.keyspace+'.clients (id, first_name, last_name, address_1,address_2,city,zip_code,country,phone, mail, birth_date)  '
-                    + 'VALUES(?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?);';
+
+                var id_client = null;
                 var id = null;
+
+
+
+
                 if ( ! req.body.hasOwnProperty('id')) {
-                    id = cassandra.types.uuid();
+
+
+                    id_client  = cassandra.types.uuid();
+                    id = null;
+                    insert = timeId;
+                    update = timeId;
+
+                    getLastId('clients',client, function(result) {
+
+
+                        id = result;
+
+                        client.execute(upsertClient,
+                            [id_client, id, req.body.first_name, req.body.last_name, null, null, null,null, null, null,'mail@test.fr',req.body.birth_date,update, insert],{prepare : true},
+                            afterExecution('Error: ', 'Client ' + req.body.first_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
+
+                    });
+
                 } else {
+
+                    id_client = req.body.id_client;
                     id = req.body.id;
+                    insert = req.body.insert_time;
+                    update = timeId;
+                    client.execute(upsertClient,
+                        [id_client, id, req.body.first_name, req.body.last_name, null, null, null,null, null, null,'mail@test.fr',req.body.birth_date,update, insert],{prepare : true},
+                        afterExecution('Error: ', 'Client ' + req.body.first_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
+
+
+
+
                 }
 
-                client.execute(upsertClient,
-                    [id, req.body.first_name, req.body.last_name, null, null, null,null, null, null,null,req.body.birth_date],
-                    afterExecution('Error: ', 'Client ' + req.body.first_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
+
+
 
                 break;
-
 
             case 'deleteClient':
                 console.log('deleteclient');
@@ -38,42 +72,34 @@ module.exports = {
 
 
             case 'getClient':
-                /*console.log('getClient');
-                  client.execute("SELECT id, first_name, last_name, birth_date FROM "+config.bdd.keyspace+".clients WHERE last_name = '"+req.params.text+"'; ", function (err, result) {
-                  if (!err){
 
-                        if ( result.rows.length > 0 ) {
-                            data = result.rows[0];
-                            var user = result.rows[0];
-                           // return user;
-                            console.log("id =  %s, name = %s, date = %d", user.id,user.first_name, user.birth_date);
-                            return  "hello";
+
+                if ( ! req.params.hasOwnProperty('id')) {
+                    console.log('getclient without  id');
+                    client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE last_name = '" + req.params.text + "'; ", function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.status(404).send({msg: 'client not found.'});
                         } else {
-                            console.log("No results");
-                            //return 0;
+
+                            res.send(result.rows);
                         }
-                    }else{
-                        console.log(err);
-                    }
+                    });
 
+                }else{
+                    console.log('getclient with id = ' + req.params.id );
+                    client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE id = '" + req.params.id + "'; ", function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.status(404).send({msg: 'client not found.'});
+                        } else {
 
-                    // Run next function in series
-                   // callback(err, null);
+                            res.send(result.rows[0]);
+                            console.log(result.rows[0]);
+                        }
+                    });
 
-                 });*/
-
-
-
-                client.execute("SELECT id, first_name, last_name, birth_date FROM "+config.bdd.keyspace+".clients WHERE last_name = '"+req.params.text+"'; ", function (err, result) {
-                    if (err) {
-                        res.status(404).send({ msg : 'client not found.' });
-                    } else {
-                        
-                        res.send(result.rows);
-                    }
-                });
-
-
+                }
 
 
 
@@ -100,7 +126,8 @@ module.exports = {
                         async.parallel([
                             function(next) {
                                 client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.clients (' +
-                                    'id uuid,' +
+                                    'id_client uuid,' +
+                                    'id int,' +
                                     'first_name varchar,' +
                                     'last_name varchar,' +
                                     'address_1 varchar,' +
@@ -111,8 +138,10 @@ module.exports = {
                                     'phone int,' +
                                     'mail varchar,' +
                                     'birth_date varchar,' +
-                                    'PRIMARY KEY (last_name, first_name, id,  birth_date)' +
-                                    ');',
+                                    'last_update_time timeuuid,' +
+                                    'insert_time timeuuid,' +
+                                    'PRIMARY KEY ((id_client),insert_time, id, last_name, mail)' +
+                                    ')WITH CLUSTERING ORDER BY (insert_time DESC);',
                                     next);
                             } ,
                              function(next) {
@@ -127,13 +156,15 @@ module.exports = {
                              },
                             function(next) {
                                 client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.orders (' +
-                                    'id uuid PRIMARY KEY,' +
+                                    'id_order uuid,' +
+                                    'id varchar,' +
                                     'client_id varchar,' +
                                     'client_first_name varchar,' +
                                     'date_of_issue varchar,' +
                                     'date_of_dispatch varchar,' +
                                     'date_of_reception varchar,' +
                                     'status_order varchar,' +
+                                    'PRIMARY KEY (id_order)' +
                                     ');',
                                     next);
                             },function(next) {
@@ -159,6 +190,41 @@ module.exports = {
 
 
 
+
+
+    },
+    indexe: function(res){
+
+
+        var client = new cassandra.Client({contactPoints: [config.bdd.host]});
+        client.execute("CREATE KEYSPACE IF NOT EXISTS " + config.bdd.keyspace + " WITH replication " +
+            "= {'class' : 'SimpleStrategy', 'replication_factor' : 3};",
+
+            function (err) {
+                if ( err) {
+                    afterExecution('Error: ', 'Keyspace created.', res);
+                } else {
+
+                    async.parallel([
+                        function(next) {
+                            client.execute('CREATE INDEX ON '+ config.bdd.keyspace+'.clients (' +
+                                'last_name' +
+                                ');',
+                                next);
+                        },
+                        function(next) {
+                            client.execute('CREATE INDEX ON '+ config.bdd.keyspace+'.clients (' +
+                                'mail' +
+                                ');',
+                                next);
+                        }
+                    ], afterExecution('Error: ', 'index created.' , res));
+
+                }
+
+            }
+
+        );
 
 
     },
@@ -188,4 +254,29 @@ function afterExecution( errorMessage, successMessage, res) {
             res.json(successMessage);
         }
     }
+}
+
+function getLastId(table,client,callback){
+    var id = null;
+
+    client.execute("SELECT id, dateof(insert_time) FROM " + config.bdd.keyspace + "."+table+" LIMIT 1; ", function (err, result) {
+
+
+        if (err) {
+            console.log(err);
+           callback(err);
+        } else {
+
+            if ( result.rows.length > 0 ) {
+                id = result.rows[0].id + 1;
+            }else{
+                id = 1;
+            }
+
+            callback(id);
+
+        }
+
+    });
+
 }

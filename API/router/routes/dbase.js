@@ -45,6 +45,11 @@ router.get('/drop', function(req, res) {
     base.drop(res);
 
 });
+// drop db
+router.get('/indexe', function(req, res) {
 
+    base.indexe(res);
+
+});
 
 module.exports = router;
