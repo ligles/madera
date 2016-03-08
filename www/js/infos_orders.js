@@ -41,10 +41,10 @@ var initPage = function() {
                     "orders",
                     params,
                     function(result) {
-                        alert("Ajout OK! " + result);
+                        alert("Ajout effectué! " + result);
                     },
                     function(status, text) {
-                        alert("Ajout fail! (" + status + ") : " + text);
+                        alert("Erreur lors de l'ajout! " + text);
                     }
                 );
             }
@@ -67,7 +67,7 @@ var initPage = function() {
             order_id,
             function(order_info) {
 
-                document.getElementById("infos_id").innerText = "N�" + order_info.id;
+                document.getElementById("infos_id").innerText = "N°" + order_info.id;
                 document.getElementById("infos_client_id").value = order_info.client_id;
                 document.getElementById("infos_client_name").value = order_info.date;
                 document.getElementById("infos_date_of_isssue").value = order_info.date_emission;
@@ -98,11 +98,10 @@ var initPage = function() {
                         "orders",
                         params,
                         function(result) {
-                            console.log(result);
-                            alert("Update OK! " + result);
+                            alert("Mise à jour effectué! " + result);
                         },
                         function(status, text) {
-                            alert("Update fail! (" + status + ") : " + text);
+                            alert("Erreur lors de la mise à jour! " + text);
                         }
                     );
                 }

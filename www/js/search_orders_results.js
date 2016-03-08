@@ -18,7 +18,7 @@ var initPage = function() {
                     div.setAttribute('id', order.id_order);
 
                     var span_id = document.createElement('span');
-                    span_id.innerText = "N°" + order.client_id;
+                    span_id.innerText = "NÂ°" + order.client_id;
 
                     var span_client = document.createElement('span');
                     span_client.innerText = "CLIENT" + order.client_id +

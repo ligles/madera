@@ -44,10 +44,10 @@ var initPage = function() {
                     "projects",
                     params,
                     function(result) {
-                        alert("Ajout OK! " + result);
+                        alert("Ajout effectué! " + result);
                     },
                     function(status, text) {
-                        alert("Ajout fail! (" + status + ") : " + text);
+                        alert("Erreur lors de l'ajout! " + text);
                     }
                 );
             }
@@ -130,10 +130,10 @@ var initPage = function() {
                         "projects",
                         params,
                         function(result) {
-                            alert("Update OK! " + result);
+                            alert("Mise à jour effectué! " + result);
                         },
                         function(status, text) {
-                            alert("Update fail! (" + status + ") : " + text);
+                            alert("Erreur lors de la mise à jour! " + text);
                         }
                     );
                 }

@@ -8,7 +8,7 @@ var AJAX_TOKEN = "MADERA";
 //-----------------------------------------------------------------------
 
 function ajax(query, category, param, onSuccess, onError) {
-    onError = onError || function(status, text) { alert('Erreur ' + category + ' (' + status + ') : ' + text); };
+    onError = onError || function(status, text) { alert(text); };
 
     var xhttp;
 
@@ -21,15 +21,24 @@ function ajax(query, category, param, onSuccess, onError) {
 
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
+
+            try {
+                document.getElementsByClassName('load-bar')[0].style.display = "none";
+            }
+            catch (ex) {}
+
             if (xhttp.status == 200) {
                 onSuccess(JSON.parse(xhttp.response));
             }
             else if (xhttp.status == 0) {
-                onError("connexion", "Veuillez activer une connexion r�seau puis r�essayer.");
-            }
+                onError("connexion", "Veuillez activer une connexion réseau puis réessayer.");            }
             else {
-                onError(xhttp.status, xhttp.statusText);
-            }
+                var msg = [];
+                msg[200] = JSON.stringify("Requête effectué avec succès.");
+                msg[204] = JSON.stringify("Aucun résultat.");
+                msg[400] = JSON.stringify("Paramètre manquant.");
+
+                onError(xhttp.status, msg[xhttp.status]);            }
         }
     };
 

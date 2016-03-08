@@ -99,11 +99,11 @@ var initPage = function() {
                     "POST",
                     "quotations",
                     params,
-                    function (result) {
-                        alert("Ajout OK! " + result);
+                    function(result) {
+                        alert("Ajout effectué! " + result);
                     },
-                    function (status, text) {
-                        alert("Ajout fail! (" + status + ") : " + text);
+                    function(status, text) {
+                        alert("Erreur lors de l'ajout! " + text);
                     }
                 );
             }
@@ -159,10 +159,10 @@ var initPage = function() {
                         var amount_3 = document.getElementById("infos_amount_03").value;
                         var amount_4 = document.getElementById("infos_amount_04").value;
 
-                        if(amount_1 == ""
-                            || amount_2 == ""
-                            || amount_3 == ""
-                            || amount_4 == ""
+                        if(amount_1 == "" || amount_1 == 0
+                            || amount_2 == "" || amount_2 == 0
+                            || amount_3 == "" || amount_3 == 0
+                            || amount_4 == "" || amount_4 == 0
                         ) {
                             alert("Veuillez compléter tous les échelonnements.");
                             return;
@@ -181,10 +181,10 @@ var initPage = function() {
                             "quotations",
                             params,
                             function(result) {
-                                alert("Update OK! " + result);
+                                alert("Mise à jour effectué! " + result);
                             },
                             function(status, text) {
-                                alert("Update fail! (" + status + ") : " + text);
+                                alert("Erreur lors de la mise à jour! " + text);
                             }
                         );
                     }
