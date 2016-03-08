@@ -3,8 +3,9 @@
  ************************************************************************/
 
 var express = require('express'),
-    router = express.Router();
-
+    router = express.Router(),
+    config = require ('../../config'),
+    base = require('../../base/connection');
 // TODO : Remplacer par les requêtes en base de données
 var clients = [
     {
@@ -82,7 +83,7 @@ router.get('/:id', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send('400');
+        res.send(msg400);
     }
     else
     {
@@ -97,7 +98,7 @@ router.get('/:id', function(req, res) {
         if(result == 0) {
             res.status(204);
             res.header("Access-Control-Allow-Origin", "*");
-            res.send('204');
+            res.send(msg204);
         }
         else {
             res.status(200);
@@ -109,38 +110,27 @@ router.get('/:id', function(req, res) {
 
 // Search client by text / ref
 router.get('/search/:text', function(req, res) {
+    console.log("enter");
     if(req.params.text == null)
     {
+        console.log("null");
+
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send('400');
+        res.send(msg400);
     }
     else
     {
-        var text = req.params.text.toUpperCase();
+        //var text = req.params.text.toUpperCase();
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        base.query('getClient',req,res);
 
-        var result = clients.filter(function(item) {
-            if (item.id.toUpperCase().search(text) != -1) return true;
-            if (item.first_name.toUpperCase().search(text) != -1) return true;
-            if (item.last_name.toUpperCase().search(text) != -1) return true;
-            return false;
-        });
-
-        if(result == 0) {
-            res.status(204);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send('204');
-        }
-        else {
-            res.status(200);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send(result);
-        }
     }
 });
-
 // Add client
 router.post('/', function(req, res) {
+
 
     if(req.body.first_name == null
         || req.body.last_name == null
@@ -148,27 +138,16 @@ router.post('/', function(req, res) {
     {
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send('400');
+        res.send(msg400);
     }
     else
     {
-        clients.push({
-            id: "00000" + (clients.length + 1),
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            address_1: "",
-            address_2: "",
-            city: "",
-            zip_code: "",
-            country:"France",
-            phone: "",
-            mail: "",
-            birth_date: req.body.birth_date
-        });
 
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send('200');
+        base.query('upsertClient',req,res);
+
+
     }
 });
 
@@ -186,20 +165,10 @@ router.post('/update/', function(req, res) {
     }
     else
     {
-        for(var count = 0; count < clients.length; count++) {
-            if(clients[count].id == req.body.id) {
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        base.query('upsertClient',req,res);
 
-                clients[count].first_name = req.body.first_name;
-                clients[count].last_name = req.body.last_name;
-                clients[count].birth_date = req.body.birth_date;
-
-                res.status(200);
-                res.header("Access-Control-Allow-Origin", "*");
-                res.send('200');
-
-                return;
-            }
-        }
 
         res.status(204);
         res.header("Access-Control-Allow-Origin", "*");

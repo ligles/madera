@@ -11,7 +11,7 @@ module.exports = {
 
 
         var client = new cassandra.Client({contactPoints: [config.bdd.host], keyspace:config.bdd.keyspace });
-        var data = "foo";
+
         switch(query) {
             case 'upsertClient':
 
@@ -83,8 +83,6 @@ module.exports = {
                 console.log('default');
                 break;
         }
-        //console.log("id data =  %s, name = %s, date = %d", data.id,data.first_name, data.birth_date)
-        console.log(data);
 
     },
     init: function(res){
