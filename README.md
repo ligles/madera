@@ -30,6 +30,26 @@ This project is made of three parts :
 
 There are the steps to install and deploy it.
 
+Config file:
+* create the config file "config.js" in API folder.
+
+***********************************************************************************
+            ex:
+            var config = {};
+
+            config.bdd = {};
+            config.api = {};
+
+            config.bdd.host = '';
+            config.bdd.port = ;
+            config.bdd.keyspace = '';
+            config.api.port = process.env.PORT || 3000;
+            config.api.host = '';
+            config.api.token = '';
+
+            module.exports = config;
+**********************************************************************************
+
 
 Mobile application :
 * Install cordova / phonegap on your computer.
