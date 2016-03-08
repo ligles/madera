@@ -82,6 +82,7 @@ router.get('/', function(req, res) {
 
 // Search order by text / ref
 router.get('/search/:text', function(req, res) {
+
     if(req.params.text == null)
     {
         res.status(400);
@@ -89,7 +90,7 @@ router.get('/search/:text', function(req, res) {
         res.send('400');
     }
     else{
-        var text = req.params.text.toUpperCase();
+
 
         var result = orders.filter(function(item) {
             if (item.id_order.toUpperCase().search(text) != -1) return true;

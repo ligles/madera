@@ -87,24 +87,9 @@ router.get('/:id', function(req, res) {
     }
     else
     {
-        var result = clients.filter(function(item) {
-            return item.id == req.params.id
-        })[0];
-        result.projects_list = projects.filter(function(item) {
-            if(item.client == result.id) return true;
-            return false;
-        });
-
-        if(result == 0) {
-            res.status(204);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send(msg204);
-        }
-        else {
-            res.status(200);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send(result);
-        }
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        base.query('getClient',req,res);
     }
 });
 
@@ -114,14 +99,13 @@ router.get('/search/:text', function(req, res) {
     if(req.params.text == null)
     {
         console.log("null");
-
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
         res.send(msg400);
     }
     else
     {
-        //var text = req.params.text.toUpperCase();
+        console.log("not null");
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
         base.query('getClient',req,res);
@@ -131,7 +115,7 @@ router.get('/search/:text', function(req, res) {
 // Add client
 router.post('/', function(req, res) {
 
-
+    console.log("enter2");
     if(req.body.first_name == null
         || req.body.last_name == null
         || req.body.birth_date == null)
@@ -165,14 +149,13 @@ router.post('/update/', function(req, res) {
     }
     else
     {
+        console.log('try to update');
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
         base.query('upsertClient',req,res);
 
 
-        res.status(204);
-        res.header("Access-Control-Allow-Origin", "*");
-        res.send('204');
+
     }
 });
 

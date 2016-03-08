@@ -57,6 +57,7 @@ var initPage = function() {
             client_id,
             function(data) {
 
+
                 document.getElementById("infos_id").innerText = "N°" + data.id;
                 document.getElementById("infos_last_name").value = data.last_name;
                 document.getElementById("infos_first_name").value = data.first_name;
