@@ -98,17 +98,18 @@ router.get('/search/:text', function(req, res) {
     console.log("enter");
     if(req.params.text == null)
     {
-        console.log("null");
+
         res.status(400);
         res.header("Access-Control-Allow-Origin", "*");
         res.send(msg400);
     }
     else
     {
-        console.log("not null");
+
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
         base.query('getClient',req,res);
+
 
     }
 });

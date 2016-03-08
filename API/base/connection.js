@@ -83,8 +83,14 @@ module.exports = {
                             console.log(err);
                             res.status(404).send({msg: 'client not found.'});
                         } else {
-                            console.log(result);
-                            res.send(result.rows);
+
+                            var client_tab = result.rows;
+
+
+                            res.send(client_tab);
+
+
+
                         }
                     });
 
@@ -98,7 +104,15 @@ module.exports = {
                             res.status(404).send({msg: 'client not found.'});
                         } else {
                             console.log(result);
-                            res.send(result.rows[0]);
+
+                            var client_tab = result.rows[0];
+                            client_tab.projects_list = new Array();//TODO add projet
+
+                            console.log(client_tab);
+
+                            res.send(client_tab);
+
+
                         }
                     });
 
@@ -109,6 +123,116 @@ module.exports = {
 
 
                 break;
+
+            case 'upsertProjects':
+
+
+                console.log("add project");
+                var timeId = cassandra.types.TimeUuid.now();
+                var insert,update = null;
+                var upsertProjects = 'INSERT INTO '+config.bdd.keyspace+'.projects (id_project, id, id_client, project_name, date, status,last_update_time,insert_time )'
+                    + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?);';
+
+
+                var id_project = null;
+                var id = null;
+
+
+
+
+                if ( ! req.body.hasOwnProperty('id')) {
+
+
+                    id_project  = cassandra.types.uuid();
+                    id = null;
+                    insert = timeId;
+                    update = timeId;
+
+                    getLastId('projects',client, function(result) {
+
+
+                        id = result;
+                       // id = 1;
+                        client.execute(upsertProjects,
+                            [id_project, id, req.body.client, req.body.project_name, req.body.date, req.body.status, update, insert],{prepare : true},
+                            afterExecution('Error: ', 'Projet ' + req.body.project_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
+
+                    });
+
+                } else {
+
+                    id_project = req.body.id_project;
+                    id = req.body.id;
+                    insert = req.body.insert_time;
+                    update = timeId;
+                    client.execute(upsertProjects,
+                        [id_project, id, req.body.client_id, req.body.project_name, req.body.date, req.body.status, update, insert],{prepare : true},
+                        afterExecution('Error: ', 'Projet ' + req.body.project_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
+
+
+
+
+                }
+
+
+
+
+                break;
+            case 'getProject':
+
+
+                if ( ! req.params.hasOwnProperty('id')) {
+                    console.log('getproject without  id');
+
+
+                    client.execute("SELECT id_project,id_client, id, project_name, date, status, last_update_time, insert_time FROM " + config.bdd.keyspace + ".projects WHERE project_name  = ?;", [req.params.text],{prepare : true}, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.status(404).send({msg: 'project not found.'});
+                        } else {
+
+                            var project_tab = result.rows;
+
+
+                            res.send(project_tab);
+
+
+
+                        }
+                    });
+
+
+
+                }else{
+                    console.log('getproject with id = ' + req.params.id );
+                    client.execute("SELECT id_project,id_client, id, project_name, date, status, last_update_time, insert_time FROM " + config.bdd.keyspace + ".projects WHERE id  = ? ALLOW FILTERING;", [req.params.id],{prepare : true}, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.status(404).send({msg: 'project not found.'});
+                        } else {
+                            console.log(result);
+
+                            var project_tab = result.rows[0];
+                            project_tab.quotations_list = new Array();//TODO add projet
+
+                            console.log(project_tab);
+
+                            res.send(project_tab);
+
+
+                        }
+                    });
+
+
+                }
+
+
+
+
+                break;
+
+
+
             default:
                 console.log('default');
                 break;
@@ -150,12 +274,16 @@ module.exports = {
                             } ,
                              function(next) {
                              client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.projects (' +
-                             'id uuid PRIMARY KEY,' +
+                             'id_project uuid,'+
+                             'id int,' +
+                             'id_client int,' +
                              'project_name varchar,' +
                              'date varchar,' +
-                             'client uuid,' +
                              'status varchar,'+
-                             ');',
+                             'last_update_time timeuuid,' +
+                             'insert_time timeuuid,' +
+                             'PRIMARY KEY ((id_project),id,project_name)' +
+                             ')WITH CLUSTERING ORDER BY (id DESC);',
                              next);
                              },
                             function(next) {
@@ -221,7 +349,13 @@ module.exports = {
                                 'mail' +
                                 ');',
                                 next);
-                        }
+                        },
+                        function(next) {
+                            client.execute('CREATE INDEX ON '+ config.bdd.keyspace+'.projects (' +
+                                'project_name' +
+                                ');',
+                                next);
+                        },
                     ], afterExecution('Error: ', 'index created.' , res));
 
                 }
@@ -237,10 +371,6 @@ module.exports = {
         var client = new cassandra.Client({contactPoints: ['82.235.3.251']});
         client.execute("DROP KEYSPACE IF EXISTS " + config.bdd.keyspace + ";",
             afterExecution('Error: ', 'Keyspace droped.', res));
-
-
-
-
 
     }
 
@@ -270,11 +400,13 @@ function getLastId(table,client,callback){
             console.log(err);
            callback(err);
         } else {
-            //console.log("get last id" +result);
+            console.log("get last id =" +result);
+            console.log("get row =" +result.rows);
             if ( result.rows.length > 0 ) {
                 console.log("get last id" +result.rows[0].id);
                 id = result.rows[0].id + 1;
             }else{
+                console.log("pass ici");
                 id = 1;
             }
 

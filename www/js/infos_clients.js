@@ -69,35 +69,36 @@ var initPage = function() {
                 document.getElementById("infos_first_name").value = data.first_name;
                 document.getElementById("infos_birth_date").value = data.birth_date;
 
-                data.projects_list.forEach(function(project) {
 
-                    var div = document.createElement('div');
-                    div.setAttribute('class', 'one_search_result');
-                    div.setAttribute('id', project.id);
+                    data.projects_list.forEach(function(project) {
 
-                    var span_name = document.createElement('span');
-                    span_name.innerText = "-> " + project.project_name;
+                        var div = document.createElement('div');
+                        div.setAttribute('class', 'one_search_result');
+                        div.setAttribute('id', project.id);
 
-                    var span_id = document.createElement('span');
-                    span_id.innerText = "N°" + project.id;
+                        var span_name = document.createElement('span');
+                        span_name.innerText = "-> " + project.project_name;
 
-                    var span_date = document.createElement('span');
-                    span_date.innerText = project.date;
+                        var span_id = document.createElement('span');
+                        span_id.innerText = "N°" + project.id;
 
-                    div.appendChild(span_name);
-                    div.appendChild(span_id);
-                    div.appendChild(span_date);
+                        var span_date = document.createElement('span');
+                        span_date.innerText = project.date;
 
-                    document.getElementById("projects_list").appendChild(div);
+                        div.appendChild(span_name);
+                        div.appendChild(span_id);
+                        div.appendChild(span_date);
 
-                    div.onclick = function(evt)
-                    {
-                        window.localStorage.setItem("project_id", project.id);
-                        window.localStorage.setItem("add_project", null);
+                        document.getElementById("projects_list").appendChild(div);
 
-                        window.location.href = "infos_projects.html";
-                    }
-                });
+                        div.onclick = function(evt)
+                        {
+                            window.localStorage.setItem("project_id", project.id);
+                            window.localStorage.setItem("add_project", null);
+
+                            window.location.href = "infos_projects.html";
+                        }
+                    });
 
                 document.getElementById("add_new_project").onclick = function() {
                     window.localStorage.setItem("add_project", "true");

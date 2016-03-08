@@ -3,7 +3,9 @@
  ************************************************************************/
 
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    config = require ('../../config'),
+    base = require('../../base/connection');
 
 // TODO : Remplacer par les requêtes en base de données
 var projects = [
@@ -73,24 +75,9 @@ router.get('/:id', function(req, res) {
     }
     else
     {
-        var result = projects.filter(function(item) {
-            return item.id == req.params.id
-        })[0];
-        result.quotations_list = devis.filter(function(item) {
-            if(item.project_name == result.project_name) return true;
-            return false;
-        });
-
-        if(result == 0) {
-            res.status(204);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send('204');
-        }
-        else {
-            res.status(200);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send(result);
-        }
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        base.query('getProject',req,res);
     }
 });
 
@@ -104,24 +91,10 @@ router.get('/search/:text', function(req, res) {
     }
     else
     {
-        var text = req.params.text.toUpperCase();
-
-        var result = projects.filter(function(item) {
-            if (item.id.toUpperCase().search(text) != -1) return true;
-            if (item.project_name.toUpperCase().search(text) != -1) return true;
-            return false;
-        });
-
-        if(result == 0) {
-            res.status(204);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send('204');
-        }
-        else {
-            res.status(200);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send(result);
-        }
+        console.log("not null");
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        base.query('getProject',req,res);
     }
 });
 
@@ -139,7 +112,7 @@ router.post('/', function(req, res) {
     }
     else
     {
-        var numberProjectForClient = 1;
+       /* var numberProjectForClient = 1;
 
         projects.forEach(function(item) {
             if(item.client == req.body.client) numberProjectForClient++;
@@ -151,11 +124,11 @@ router.post('/', function(req, res) {
             date: req.body.date,
             client: req.body.client,
             status: req.body.status
-        });
+        });*/
 
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send('200');
+        base.query('upsertProjects',req,res);
     }
 });
 

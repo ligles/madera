@@ -44,7 +44,7 @@ var initPage = function() {
                     "projects",
                     params,
                     function(result) {
-                        alert("Ajout effectué! " + result);
+                       // alert("Ajout effectué! " + result);
 
                         window.localStorage.setItem("search_project", project_name);
                         window.localStorage.setItem("projet_id", null);
@@ -78,7 +78,7 @@ var initPage = function() {
                 document.getElementById("infos_id").innerText = "N°" + project_info.id;
                 document.getElementById("infos_name").value = project_info.project_name;
                 document.getElementById("infos_date").value = project_info.date;
-                document.getElementById("infos_client").value = project_info.client;
+                document.getElementById("infos_client").value = project_info.id_client;
                 document.getElementById("infos_status").value = project_info.status;
 
                 project_info.quotations_list.forEach(function(quotation) {
