@@ -42,6 +42,12 @@ var initPage = function() {
                     params,
                     function(result) {
                         alert("Ajout effectué! " + result);
+
+                        window.localStorage.setItem("search_order", order_id);
+                        window.localStorage.setItem("order_id", null);
+                        window.localStorage.setItem("add_order", null);
+
+                        window.location.href = "search_orders_results.html";
                     },
                     function(status, text) {
                         alert("Erreur lors de l'ajout! " + text);
@@ -98,10 +104,10 @@ var initPage = function() {
                         "orders",
                         params,
                         function(result) {
-                            alert("Mise à jour effectué! " + result);
+                            alert("Mise à jour effectué!");
                         },
                         function(status, text) {
-                            alert("Erreur lors de la mise à jour! " + text);
+                            alert("Erreur lors de la mise à jour!");
                         }
                     );
                 }

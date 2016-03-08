@@ -45,6 +45,12 @@ var initPage = function() {
                     params,
                     function(result) {
                         alert("Ajout effectué! " + result);
+
+                        window.localStorage.setItem("search_project", project_name);
+                        window.localStorage.setItem("projet_id", null);
+                        window.localStorage.setItem("add_project", null);
+
+                        window.location.href = "search_projects_results.html";
                     },
                     function(status, text) {
                         alert("Erreur lors de l'ajout! " + text);
@@ -130,10 +136,10 @@ var initPage = function() {
                         "projects",
                         params,
                         function(result) {
-                            alert("Mise à jour effectué! " + result);
+                            alert("Mise à jour effectué!");
                         },
                         function(status, text) {
-                            alert("Erreur lors de la mise à jour! " + text);
+                            alert("Erreur lors de la mise à jour!");
                         }
                     );
                 }
