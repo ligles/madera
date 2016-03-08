@@ -7,7 +7,7 @@ var AJAX_TOKEN = "MADERA";
 //-----------------------------------------------------------------------
 
 function ajax(query, category, param, onSuccess, onError) {
-    onError = onError || function(status, text) { alert('Erreur ' + category + ' (' + status + ') : ' + text); };
+    onError = onError || function(status, text) { alert(text); };
 
     var xhttp;
 
@@ -20,17 +20,23 @@ function ajax(query, category, param, onSuccess, onError) {
 
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
+
+            try {
+                document.getElementsByClassName('load-bar')[0].style.display = "none";
+            }
+            catch (ex) {}
+
             if (xhttp.status == 200) {
                 onSuccess(JSON.parse(xhttp.response));
             }
             else if (xhttp.status == 0) {
-                onError("connexion", "Please, turn on data connection, then try again.");
+                onError("connexion", "Erreur de connexion. S'il vous plaît, veuillez activer une connexion de données (Wifi / 3G / 4G) et réeassyer.");
             }
             else {
                 var msg = [];
-                msg[200] = JSON.stringify("Query done.");
-                msg[204] = JSON.stringify("No result.");
-                msg[400] = JSON.stringify("Missing parameter.");
+                msg[200] = JSON.stringify("Requête effectué avec succès.");
+                msg[204] = JSON.stringify("Aucun résultat.");
+                msg[400] = JSON.stringify("Paramètre manquant.");
 
                 onError(xhttp.status, msg[xhttp.status]);
             }
@@ -68,7 +74,7 @@ function ajax(query, category, param, onSuccess, onError) {
             break;
 
         default :
-            onError('000', 'Mauvaise requ�te.');
+            onError('000', 'Mauvaise requête.');
             break;
     }
 
