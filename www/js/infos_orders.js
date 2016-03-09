@@ -4,6 +4,11 @@ var initPage = function() {
     var order_add = window.localStorage.getItem("add_order");
 
     if(order_add != null && order_add == "true") {
+        // Hide the loading bar
+        try {
+            document.getElementsByClassName('load-bar')[0].style.display = "none";
+        }
+        catch (ex) {}
 
         document.getElementById("infos_id").innerText = "\"Nouveau\"";
         document.getElementById("modify").innerText = "AJOUTER";
