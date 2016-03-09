@@ -59,7 +59,7 @@ router.get('/:id', function(req, res) {
     }
     else
     {
-        console.log( "get id");
+
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
         base.query('getQuotation',req,res);

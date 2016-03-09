@@ -24,17 +24,21 @@ var initPage = function() {
                     span_name.innerText = "-> " + quotation.project_name;
 
                     var span_id = document.createElement('span');
-                    span_id.innerText = "N°" + quotation.id;
+                    span_id.innerText = "Devis N°" + quotation.id;
 
-                    var span_client_name = document.createElement('span');
-                    span_client_name.innerText = quotation.client;
+                    var span_client_first_name = document.createElement('span');
+                    span_client_first_name.innerText = quotation.first_name;
+
+                    var span_client_last_name = document.createElement('span');
+                    span_client_last_name.innerText = quotation.last_name;
 
                     var span_statut = document.createElement('span');
                     span_statut.innerText = quotation.status;
 
                     div.appendChild(span_name);
                     div.appendChild(span_id);
-                    div.appendChild(span_client_name);
+                    div.appendChild(span_client_first_name);
+                    div.appendChild(span_client_last_name);
                     div.appendChild(span_statut);
 
                     document.getElementById("results_list").appendChild(div);

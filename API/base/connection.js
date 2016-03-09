@@ -254,8 +254,8 @@ module.exports = {
 
                 var timeId = cassandra.types.TimeUuid.now();
                 var insert,update = null;
-                var upsertQuotations = 'INSERT INTO '+config.bdd.keyspace+'.quotations (id_quotation, id, id_project, project_name, date, reference, status, amounts, last_update_time,insert_time )'
-                    + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+                var upsertQuotations = 'INSERT INTO '+config.bdd.keyspace+'.quotations (id_quotation, id, id_project, project_name,first_name, last_name, date, reference, status, amounts, last_update_time,insert_time )'
+                    + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
 
 
                 var id_project = null;
@@ -285,7 +285,7 @@ module.exports = {
                         reference = id;
                         // id = 1;
                         client.execute(upsertQuotations,
-                            [id_quotation, id, req.body.project_id,req.body.project_name, req.body.date,reference, req.body.status, amounts, update, insert],{prepare : true},
+                            [id_quotation, id, req.body.project_id,req.body.project_name, req.body.first_name, req.body.last_name, req.body.date,reference, req.body.status, amounts, update, insert],{prepare : true},
                             afterExecution('Error: ', 'Devis =  ' + reference + ' inseré. id = '+ id, res));
 
                     });
@@ -311,25 +311,16 @@ module.exports = {
                     console.log('getquotation without  id');
 
 
-                    client.execute("SELECT id_quotation, id, id_project,project_name, date, reference, status, amounts, last_update_time,insert_time  FROM " + config.bdd.keyspace + ".quotations WHERE reference  = ?;", [req.params.text],{prepare : true}, function (err, result) {
+                    client.execute("SELECT id_quotation, id, id_project,project_name,first_name, last_name, date, reference, status, amounts, last_update_time,insert_time  FROM " + config.bdd.keyspace + ".quotations WHERE reference  = ?;", [req.params.text],{prepare : true}, function (err, result) {
                         if (err) {
                             console.log(err);
                             res.status(404).send({msg: 'quotation not found.'});
                         } else {
 
-                           /*
-                            'id', quotation.id)
-                            quotation.project_name
-                            quotation.id
-                            quotation.client;
-                            quotation.status;
-                           * */
 
+                            var quotation_tab = result.rows;
 
-                            var project_tab = result.rows;
-                            console.log( "resultats ="+result.rows);
-
-                            res.send(project_tab);
+                            res.send(quotation_tab);
 
 
 
@@ -339,22 +330,29 @@ module.exports = {
 
 
                 }else{
-                    console.log('getproject with id = ' + req.params.id );
-                    client.execute("SELECT id_project,id_client, id, project_name, date, status, last_update_time, insert_time FROM " + config.bdd.keyspace + ".projects WHERE id  = ? ALLOW FILTERING;", [req.params.id],{prepare : true}, function (err, result) {
+                    var amounts = null;
+
+                    client.execute("SELECT id_quotation, id, id_project,project_name,first_name, last_name, date, reference, status, amounts, last_update_time,insert_time FROM " + config.bdd.keyspace + ".quotations WHERE id  = ? ALLOW FILTERING;", [req.params.id],{prepare : true}, function (err, result) {
                         if (err) {
                             console.log(err);
-                            res.status(404).send({msg: 'project not found.'});
+                            res.status(404).send({msg: 'quotation not found.'});
                         } else {
                             console.log(result);
 
-                            var project_tab = result.rows[0];
-                            project_tab.quotations_list = new Array();//TODO add projet
-
-                            console.log(project_tab);
-
-                            res.send(project_tab);
 
 
+
+                            var quotation_tab = result.rows[0];
+                            amounts = JSON.parse(quotation_tab.amounts);
+
+
+                            quotation_tab.amounts =amounts.amount;
+
+                            quotation_tab.components_list = new Array();//TODO add projet
+
+
+
+                            res.send(quotation_tab);
                         }
                     });
 
@@ -436,6 +434,8 @@ module.exports = {
                                     'id int,' +
                                     'id_project int,' +
                                     'project_name varchar,' +
+                                    'first_name varchar,' +
+                                    'last_name varchar,' +
                                     'date varchar,' +
                                     'reference int,' +
                                   //  'client uuid,' +

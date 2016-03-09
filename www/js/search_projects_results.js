@@ -28,7 +28,7 @@ var initPage = function() {
                     span_name.innerText = "-> " + project.project_name;
 
                     var span_id = document.createElement('span');
-                    span_id.innerText = "N°" + project.id;
+                    span_id.innerText = "Projet N°" + project.id;
 
                     var span_date = document.createElement('span');
                     span_date.innerText = project.date;
