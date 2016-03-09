@@ -78,6 +78,9 @@ router.get('/:id', function(req, res) {
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
         base.query('getProject',req,res);
+
+
+
     }
 });
 

@@ -62,8 +62,6 @@ module.exports = {
                 }
 
 
-
-
                 break;
 
             case 'deleteClient':
@@ -75,7 +73,7 @@ module.exports = {
 
 
                 if ( ! req.params.hasOwnProperty('id')) {
-                    console.log('getclient without  id');
+
 
 
                     client.execute("SELECT id_client, id, first_name, last_name, birth_date FROM " + config.bdd.keyspace + ".clients WHERE last_name  = ?;", [req.params.text],{prepare : true}, function (err, result) {
@@ -85,9 +83,14 @@ module.exports = {
                         } else {
 
                             var client_tab = result.rows;
+                            if ( !result.rows.length > 0 ) {
+                                res.status(204);
+                                res.header("Access-Control-Allow-Origin", "*");
+                                res.send('204');
+                            }else{
+                                res.send(client_tab);
 
-
-                            res.send(client_tab);
+                            }
 
 
 

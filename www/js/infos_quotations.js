@@ -15,6 +15,67 @@ var initPage = function() {
         document.getElementById("infos_amount_percent_0" + number).value = (value / amount * 100).toFixed(2);
     };
 
+//ajout gv
+
+
+
+    var updateSelect = function () {
+
+        var selectList = document.getElementById("infos_modele_gamme_select");
+
+        selectList.options.length = 0;
+
+
+        var modele_luxe = ["luxe-1","luxe-2","luxe-3"];
+        var modele_nature = ["nature-1","nature-2","nature-3"];
+        var modele_contemporain = ["contemporain-1","contemporain-1","contemporain-1"];
+
+        var gamme = document.getElementById("infos_gamme_select").value;
+
+        if(gamme == "luxe"){
+            var array = modele_luxe;
+        }
+        if(gamme == "nature"){
+            var array = modele_nature;
+        }
+        if(gamme == "contemporain"){
+            var array = modele_contemporain;
+        }
+
+
+
+        for (var i = 0; i < array.length; i++) {
+            var option = document.createElement("option");
+            option.value = array[i];
+            option.text = array[i];
+            selectList.appendChild(option);
+        }
+
+    }
+
+
+    //var myDiv = document.getElementById("infos_gamme_select");
+    var array = ["luxe","nature","contemporain"];
+    var selectList = document.getElementById("infos_gamme_select");
+    for (var i = 0; i < array.length; i++) {
+        var option = document.createElement("option");
+        option.value = array[i];
+        option.text = array[i];
+        selectList.appendChild(option);
+    }
+
+
+
+
+
+    document.getElementById("infos_gamme_select").onchange = function () {
+
+        updateSelect();
+    };
+
+
+
+
     document.getElementById("infos_amount_01").onchange = function () {
         modifAmount(1);
     };
