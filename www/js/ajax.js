@@ -21,6 +21,7 @@ function ajax(query, category, param, onSuccess, onError) {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
 
+            // Hide the loading bar
             try {
                 document.getElementsByClassName('load-bar')[0].style.display = "none";
             }
@@ -86,5 +87,4 @@ function ajax(query, category, param, onSuccess, onError) {
     //xhttp.setRequestHeader("token", AJAX_TOKEN);
     if(xhttpParam) xhttp.send(param);
     else xhttp.send();
-
 }

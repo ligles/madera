@@ -4,6 +4,11 @@ var initPage = function() {
     var client_add = window.localStorage.getItem("add_client");
 
     if(client_add != null && client_add == "true") {
+        // Hide the loading bar
+        try {
+            document.getElementsByClassName('load-bar')[0].style.display = "none";
+        }
+        catch (ex) {}
 
         document.getElementById("infos_id").innerText = "\"Nouveau\"";
         document.getElementById("modify").innerText = "AJOUTER";
