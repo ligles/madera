@@ -10,6 +10,8 @@ var initPage = function() {
         document.getElementById("infos_status").value = "EN ATTENTE";
 
         var client_id = window.localStorage.getItem("client_id");
+        var first_name =  window.localStorage.getItem("first_name");
+        var last_name =  window.localStorage.getItem("last_name");
 
         if(client_id != null && client_id != "") {
             document.getElementById("infos_client").value = client_id;
@@ -19,10 +21,15 @@ var initPage = function() {
             var day = date.getDate().toString();
             if(day.length < 2) day = "0" + day;
             var month = (date.getMonth() + 1).toString();
+
+
             if(month.length < 2) month = "0" + month;
             document.getElementById("infos_date").value = day + "/" + month + "/" + date.getFullYear();
 
             document.getElementById("modify").onclick = function() {
+
+
+
 
                 var project_name = document.getElementById("infos_name").value;
                 var date = document.getElementById("infos_date").value;
@@ -35,6 +42,8 @@ var initPage = function() {
 
                 var params =
                     "project_name=" + project_name +
+                    "&first_name=" + first_name +
+                    "&last_name=" + last_name +
                     "&date=" + date +
                     "&client=" + client_id +
                     "&status=" + status;
@@ -79,13 +88,18 @@ var initPage = function() {
                 document.getElementById("infos_name").value = project_info.project_name;
                 document.getElementById("infos_date").value = project_info.date;
                 document.getElementById("infos_client").value = project_info.id_client;
+                document.getElementById("first_name_client").value = project_info.first_name;
+                document.getElementById("last_name_client").value = project_info.last_name;
                 document.getElementById("infos_status").value = project_info.status;
 
-                project_info.quotations_list.forEach(function(quotation) {
+                    project_info.quotations_list.forEach(function(quotation) {
+
 
                     var div = document.createElement('div');
                     div.setAttribute('class', 'one_search_result');
                     div.setAttribute('id', quotation.id);
+
+
 
                     var span_name = document.createElement('span');
                     span_name.innerText = "-> " + quotation.project_name;
@@ -113,6 +127,9 @@ var initPage = function() {
 
                 document.getElementById("add_new_quotation").onclick = function() {
                     window.localStorage.setItem("add_quotation", "true");
+
+                    window.localStorage.setItem("project_name", document.getElementById("infos_name").value);
+
                     window.location.href = "infos_quotations.html";
                 };
 

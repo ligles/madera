@@ -3,7 +3,9 @@
  ************************************************************************/
 
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    config = require ('../../config'),
+    base = require('../../base/connection');
 
 // TODO : Remplacer par les requêtes en base de données
 var devis = [
@@ -57,20 +59,10 @@ router.get('/:id', function(req, res) {
     }
     else
     {
-        var result = devis.filter(function(item) {
-            return item.id == req.params.id
-        })[0];
-
-        if(result == 0) {
-            res.status(204);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send('204');
-        }
-        else {
-            res.status(200);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send(result);
-        }
+        console.log( "get id");
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        base.query('getQuotation',req,res);
     }
 });
 
@@ -84,24 +76,10 @@ router.get('/search/:text', function(req, res) {
     }
     else
     {
-        var text = req.params.text.toUpperCase();
-
-        var result = devis.filter(function(item) {
-            if (item.id.toUpperCase().search(text) != -1) return true;
-            if (item.project_name.toUpperCase().search(text) != -1) return true;
-            return false;
-        });
-
-        if(result == 0) {
-            res.status(204);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send('204');
-        }
-        else {
-            res.status(200);
-            res.header("Access-Control-Allow-Origin", "*");
-            res.send(result);
-        }
+        console.log( "get id");
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        base.query('getQuotation',req,res);
     }
 });
 
@@ -122,7 +100,7 @@ router.post('/', function(req, res) {
     }
     else
     {
-        var numberOfQuotationsForClient = 1;
+        /*var numberOfQuotationsForClient = 1;
 
         for(var count = 0; count < devis.length; count++) {
             if(devis[count].client == req.body.client) numberOfQuotationsForClient++;
@@ -141,10 +119,10 @@ router.post('/', function(req, res) {
                 req.body.amount_4
             ]
         });
-
+*/
         res.status(200);
         res.header("Access-Control-Allow-Origin", "*");
-        res.send('200');
+        base.query('upsertQuotations',req,res);
     }
 });
 

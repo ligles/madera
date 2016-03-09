@@ -101,7 +101,12 @@ var initPage = function() {
                     });
 
                 document.getElementById("add_new_project").onclick = function() {
+
                     window.localStorage.setItem("add_project", "true");
+
+                    window.localStorage.setItem("first_name", document.getElementById("infos_first_name").value );
+                    window.localStorage.setItem("last_name", document.getElementById("infos_last_name").value );
+
                     window.location.href = "infos_projects.html";
                 };
 

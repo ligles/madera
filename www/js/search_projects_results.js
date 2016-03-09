@@ -17,6 +17,13 @@ var initPage = function() {
                     div.setAttribute('class', 'one_search_result');
                     div.setAttribute('id', project.id);
 
+                    var span_first_name = document.createElement('span');
+                    span_first_name.innerText =  project.first_name;
+
+                    var span_last_name = document.createElement('span');
+                    span_last_name.innerText =  project.last_name;
+
+
                     var span_name = document.createElement('span');
                     span_name.innerText = "-> " + project.project_name;
 
@@ -26,6 +33,8 @@ var initPage = function() {
                     var span_date = document.createElement('span');
                     span_date.innerText = project.date;
 
+                    div.appendChild(span_first_name);
+                    div.appendChild(span_last_name);
                     div.appendChild(span_name);
                     div.appendChild(span_id);
                     div.appendChild(span_date);

@@ -130,15 +130,15 @@ module.exports = {
                 console.log("add project");
                 var timeId = cassandra.types.TimeUuid.now();
                 var insert,update = null;
-                var upsertProjects = 'INSERT INTO '+config.bdd.keyspace+'.projects (id_project, id, id_client, project_name, date, status,last_update_time,insert_time )'
-                    + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?);';
+                var upsertProjects = 'INSERT INTO '+config.bdd.keyspace+'.projects (id_project, id, id_client,first_name, last_name, project_name, date, status,last_update_time,insert_time )'
+                    + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
 
 
                 var id_project = null;
                 var id = null;
 
 
-
+                console.log("param = "+ req.body.first_name + "   &&  "+ req.body.last_name);
 
                 if ( ! req.body.hasOwnProperty('id')) {
 
@@ -154,7 +154,7 @@ module.exports = {
                         id = result;
                        // id = 1;
                         client.execute(upsertProjects,
-                            [id_project, id, req.body.client, req.body.project_name, req.body.date, req.body.status, update, insert],{prepare : true},
+                            [id_project, id, req.body.client, req.body.first_name,req.body.last_name,req.body.project_name, req.body.date, req.body.status, update, insert],{prepare : true},
                             afterExecution('Error: ', 'Projet ' + req.body.project_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
 
                     });
@@ -166,7 +166,7 @@ module.exports = {
                     insert = req.body.insert_time;
                     update = timeId;
                     client.execute(upsertProjects,
-                        [id_project, id, req.body.client_id, req.body.project_name, req.body.date, req.body.status, update, insert],{prepare : true},
+                        [id_project, id, req.body.client, req.body.first_name,req.body.last_name,req.body.project_name, req.body.date, req.body.status, update, insert],{prepare : true},
                         afterExecution('Error: ', 'Projet ' + req.body.project_name +' '+ req.body.last_name + ' inseré. id = '+ id, res));
 
 
@@ -185,7 +185,7 @@ module.exports = {
                     console.log('getproject without  id');
 
 
-                    client.execute("SELECT id_project,id_client, id, project_name, date, status, last_update_time, insert_time FROM " + config.bdd.keyspace + ".projects WHERE project_name  = ?;", [req.params.text],{prepare : true}, function (err, result) {
+                    client.execute("SELECT id_project,id_client,first_name, last_name, id, project_name, date, status, last_update_time, insert_time FROM " + config.bdd.keyspace + ".projects WHERE project_name  = ?;", [req.params.text],{prepare : true}, function (err, result) {
                         if (err) {
                             console.log(err);
                             res.status(404).send({msg: 'project not found.'});
@@ -193,6 +193,141 @@ module.exports = {
 
                             var project_tab = result.rows;
 
+
+                            res.send(project_tab);
+
+
+
+                        }
+                    });
+
+
+
+                }else{
+                    console.log('getproject with id = ' + req.params.id );
+                    client.execute("SELECT id_project,id_client,first_name, last_name, id, project_name, date, status, last_update_time, insert_time FROM " + config.bdd.keyspace + ".projects WHERE id  = ? ALLOW FILTERING;", [req.params.id],{prepare : true}, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.status(404).send({msg: 'project not found.'});
+                        } else {
+                            console.log(result);
+
+                            var project_tab = result.rows[0];
+                            project_tab.quotations_list = new Array();//TODO add projet
+
+                            console.log(project_tab);
+
+                            res.send(project_tab);
+
+
+                        }
+                    });
+
+
+                }
+
+
+
+
+                break;
+
+            case 'upsertQuotations':
+
+                /*
+                 'id_quotation uuid,' +
+                 'id int,' +
+                 'id_project int,' +
+                 'date varchar,' +
+                 'reference varchar,' +
+                 //  'client uuid,' +
+                 'status varchar,' +
+                 'amounts text,' +
+                 'last_update_time timeuuid,' +
+                 'insert_time timeuuid,' +
+                 'PRIMARY KEY ((id_quotation),id,reference)' +
+                 ')WITH CLUSTERING ORDER BY (id DESC);'
+
+                 */
+
+
+
+
+                var timeId = cassandra.types.TimeUuid.now();
+                var insert,update = null;
+                var upsertQuotations = 'INSERT INTO '+config.bdd.keyspace+'.quotations (id_quotation, id, id_project, project_name, date, reference, status, amounts, last_update_time,insert_time )'
+                    + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+
+
+                var id_project = null;
+                var id = null;
+                var reference = null; //TODO generate ref
+
+                var amounts = new Object();
+
+                amounts.amount=[req.body.amount_1,req.body.amount_2,req.body.amount_3,req.body.amount_4];
+                amounts = JSON.stringify(amounts);
+
+
+
+                if ( ! req.body.hasOwnProperty('id')) {
+
+                console.log("param = "+ req.body.first_name + "   &&  "+ req.body.last_name);
+
+                    id_quotation  = cassandra.types.uuid();
+                    id = null;
+                    insert = timeId;
+                    update = timeId;
+
+                    getLastId('quotations',client, function(result) {
+
+
+                        id = result;
+                        reference = id;
+                        // id = 1;
+                        client.execute(upsertQuotations,
+                            [id_quotation, id, req.body.project_id,req.body.project_name, req.body.date,reference, req.body.status, amounts, update, insert],{prepare : true},
+                            afterExecution('Error: ', 'Devis =  ' + reference + ' inseré. id = '+ id, res));
+
+                    });
+
+                } else {
+
+                    id_quotation = req.body.quotation_id;
+                    id = req.body.id;
+                    insert = req.body.insert_time;
+                    update = timeId;
+                    client.execute(upsertQuotations,
+                        [id_quotation, id, req.body.project_id,req.body.project_name, req.body.date,reference, req.body.status, amounts, update, insert],{prepare : true},
+                        afterExecution('Error: ', 'Devis =  ' + reference + ' inseré. id = '+ id, res));
+
+                }
+
+                break;
+
+            case 'getQuotation':
+
+
+                if ( ! req.params.hasOwnProperty('id')) {
+                    console.log('getquotation without  id');
+
+
+                    client.execute("SELECT id_quotation, id, id_project,project_name, date, reference, status, amounts, last_update_time,insert_time  FROM " + config.bdd.keyspace + ".quotations WHERE reference  = ?;", [req.params.text],{prepare : true}, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.status(404).send({msg: 'quotation not found.'});
+                        } else {
+
+                           /*
+                            'id', quotation.id)
+                            quotation.project_name
+                            quotation.id
+                            quotation.client;
+                            quotation.status;
+                           * */
+
+
+                            var project_tab = result.rows;
+                            console.log( "resultats ="+result.rows);
 
                             res.send(project_tab);
 
@@ -225,13 +360,7 @@ module.exports = {
 
 
                 }
-
-
-
-
                 break;
-
-
 
             default:
                 console.log('default');
@@ -273,18 +402,20 @@ module.exports = {
                                     next);
                             } ,
                              function(next) {
-                             client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.projects (' +
-                             'id_project uuid,'+
-                             'id int,' +
-                             'id_client int,' +
-                             'project_name varchar,' +
-                             'date varchar,' +
-                             'status varchar,'+
-                             'last_update_time timeuuid,' +
-                             'insert_time timeuuid,' +
-                             'PRIMARY KEY ((id_project),id,project_name)' +
-                             ')WITH CLUSTERING ORDER BY (id DESC);',
-                             next);
+                                     client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.projects (' +
+                                     'id_project uuid,'+
+                                     'id int,' +
+                                     'first_name varchar,' +
+                                     'last_name varchar,' +
+                                     'id_client int,' +
+                                     'project_name varchar,' +
+                                     'date varchar,' +
+                                     'status varchar,'+
+                                     'last_update_time timeuuid,' +
+                                     'insert_time timeuuid,' +
+                                     'PRIMARY KEY ((id_project),id,project_name)' +
+                                     ')WITH CLUSTERING ORDER BY (id DESC);',
+                                     next);
                              },
                             function(next) {
                                 client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.orders (' +
@@ -301,13 +432,19 @@ module.exports = {
                                     next);
                             },function(next) {
                                 client.execute('CREATE TABLE IF NOT EXISTS '+ config.bdd.keyspace+'.quotations (' +
-                                    'id uuid PRIMARY KEY,' +
-                                    'date varchar,' +
+                                    'id_quotation uuid,' +
+                                    'id int,' +
+                                    'id_project int,' +
                                     'project_name varchar,' +
-                                    'client uuid,' +
+                                    'date varchar,' +
+                                    'reference int,' +
+                                  //  'client uuid,' +
                                     'status varchar,' +
-                                    'amounts text,' +
-                                    ');',
+                                    'amounts varchar,' +
+                                    'last_update_time timeuuid,' +
+                                    'insert_time timeuuid,' +
+                                    'PRIMARY KEY ((id_quotation),id,reference)' +
+                                    ')WITH CLUSTERING ORDER BY (id DESC);',
                                     next);
                             }
                         ], afterExecution('Error: ', 'Tables created.' , res));
@@ -353,6 +490,12 @@ module.exports = {
                         function(next) {
                             client.execute('CREATE INDEX ON '+ config.bdd.keyspace+'.projects (' +
                                 'project_name' +
+                                ');',
+                                next);
+                        },
+                        function(next) {
+                            client.execute('CREATE INDEX ON '+ config.bdd.keyspace+'.quotations (' +
+                                'reference' +
                                 ');',
                                 next);
                         },

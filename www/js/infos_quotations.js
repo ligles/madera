@@ -53,6 +53,10 @@ var initPage = function() {
         };
 
         var project_id = window.localStorage.getItem("project_id");
+        var project_name = window.localStorage.getItem("project_name");
+
+        var first_name =  window.localStorage.getItem("first_name");
+        var last_name =  window.localStorage.getItem("last_name");
 
         if(project_id != null && project_id != "") {
 
@@ -86,8 +90,12 @@ var initPage = function() {
                     return;
                 }
 
+
                 var params =
                     "project_id=" + project_id +
+                    "&project_name=" + project_name +
+                    "&first_name=" + first_name +
+                    "&last_name=" + last_name +
                     "&date=" + document.getElementById("infos_date").value +
                     "&status=" + document.getElementById("infos_status").value +
                     "&amount_1=" + amount_1 +
@@ -100,7 +108,7 @@ var initPage = function() {
                     "quotations",
                     params,
                     function(result) {
-                        alert("Ajout effectué! " + result);
+                       // alert("Ajout effectué! " + result);
 
                         window.localStorage.setItem("search_quotation", project_id);
                         window.localStorage.setItem("quotation_id", null);
